@@ -40,18 +40,12 @@ export class ParkingLot {
     return this.slots[slotNumber - 1].isAvailable();
   }
 
-  removeVehicle(vehicle: Vehicle): void {
-    const allocatedSlot = this.slots.find(
-      (slot) =>
-        slot.getAssignedVehicle()?.getRegisteredNumber() ==
-        vehicle.getRegisteredNumber()
-    );
-
-    if (allocatedSlot) {
-      return allocatedSlot.removeVehicle();
+  removeVehicle(slotNumber: number): void {
+    if (slotNumber < 0 || slotNumber > this.capacity) {
+      throw new Error('Invalid slot number');
     }
 
-    throw new Error('Vehicle not found in parking lot');
+    return this.slots[slotNumber - 1].removeVehicle();
   }
 
   getVehicleRegisteredNumbersWithColor(color: string) {

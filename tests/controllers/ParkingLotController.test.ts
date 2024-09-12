@@ -32,4 +32,19 @@ describe('ParkingLotController', () => {
     expect(messageTwo).toBe('Allocated slot number: 2');
     expect(messageThree).toBe('Allocated slot number: 3');
   });
+
+  it('should leave parked vehicle from parking lot', () => {
+    const parkingLot = new ParkingLot(3);
+    const controller = new ParkingLotController(parkingLot);
+
+    const commandOne = 'park KA-01-HH-1234 White';
+    const commandTwo = 'park KA-01-BB-0001 Black';
+    const commandThree = 'leave 2';
+
+    controller.processCommand(commandOne);
+    controller.processCommand(commandTwo);
+    const message = controller.processCommand(commandThree);
+
+    expect(message).toBe('Slot number 2 is free');
+  });
 });

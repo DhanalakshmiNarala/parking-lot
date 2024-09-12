@@ -46,7 +46,7 @@ describe('Parking Lot', () => {
     const vehicleOnePosition = parkingLot.parkVehicle(vehicleOne);
     const vehicleTwoPosition = parkingLot.parkVehicle(vehicleTwo);
 
-    parkingLot.removeVehicle(vehicleOne);
+    parkingLot.removeVehicle(1);
 
     expect(parkingLot.isSlotAvailable(vehicleOnePosition)).toBe(true);
     expect(parkingLot.isSlotAvailable(vehicleTwoPosition)).toBe(false);

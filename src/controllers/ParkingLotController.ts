@@ -7,6 +7,7 @@ export class ParkingLotController {
   COMMANDS = {
     CREATE_PARKING_LOT: 'create_parking_lot',
     PARK: 'park',
+    LEAVE: 'leave',
   };
 
   constructor(parkingLot: ParkingLot) {
@@ -20,6 +21,8 @@ export class ParkingLotController {
         return this.handleCreateParkingLot(parseInt(words[1]));
       case this.COMMANDS.PARK:
         return this.handleVehicleParking(words[1], words[2]);
+      case this.COMMANDS.LEAVE:
+        return this.handleRemoveVehicle(parseInt(words[1]));
       default:
         throw new Error('Invalid parking lot command');
     }
@@ -38,5 +41,10 @@ export class ParkingLotController {
     const vehicle = new Vehicle(registeredNumber, color);
     const slotNumber = this.parkingLot.parkVehicle(vehicle);
     return `Allocated slot number: ${slotNumber}`;
+  }
+
+  handleRemoveVehicle(slotNumber: number) {
+    this.parkingLot.removeVehicle(slotNumber);
+    return `Slot number ${slotNumber} is free`;
   }
 }
