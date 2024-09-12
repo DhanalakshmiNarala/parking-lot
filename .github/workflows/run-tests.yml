@@ -1,0 +1,45 @@
+name: Run TypeScript Tests
+
+# Trigger the workflow on push or pull requests to the main branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Define the jobs to run the tests
+jobs:
+  test:
+    # Define the operating system
+    runs-on: ubuntu-latest
+
+    # Define the steps of the job
+    steps:
+      # Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Node.js (uses the version defined in package.json or specify a version)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # or specify the version your project uses
+
+      # Install dependencies using npm
+      - name: Install dependencies
+        run: npm install
+
+      # Run the tests (Jest or another testing framework)
+      - name: Run tests
+        run: npm test
+
+      # Optionally add caching for faster builds
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
