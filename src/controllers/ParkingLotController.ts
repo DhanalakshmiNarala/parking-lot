@@ -1,20 +1,18 @@
+import {
+  CREATE_PARKING_LOT,
+  LEAVE,
+  PARK,
+  REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR,
+  SLOT_NUMBER_FOR_REGISTRATION_NUMBER,
+  SLOT_NUMBERS_FOR_CARS_WITH_COLOUR,
+  STATUS,
+} from '../constants/commands';
 import { ParkingLot } from '../models/ParkingLot';
 import { ParkingSlot } from '../models/ParkingSlot';
 import { Vehicle } from '../models/Vehicle';
 
 export class ParkingLotController {
   private parkingLot: ParkingLot;
-
-  COMMANDS = {
-    CREATE_PARKING_LOT: 'create_parking_lot',
-    PARK: 'park',
-    LEAVE: 'leave',
-    STATUS: 'status',
-    REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR:
-      'registration_numbers_for_cars_with_colour',
-    SLOT_NUMBERS_FOR_CARS_WITH_COLOUR: 'slot_numbers_for_cars_with_colour',
-    SLOT_NUMBER_FOR_REGISTRATION_NUMBER: 'slot_number_for_registration_number',
-  };
 
   constructor(parkingLot: ParkingLot) {
     this.parkingLot = parkingLot;
@@ -23,19 +21,19 @@ export class ParkingLotController {
   processCommand(userInput: string) {
     const words = userInput.split(' ');
     switch (words[0]) {
-      case this.COMMANDS.CREATE_PARKING_LOT:
+      case CREATE_PARKING_LOT:
         return this.handleCreateParkingLot(parseInt(words[1]));
-      case this.COMMANDS.PARK:
+      case PARK:
         return this.handleVehicleParking(words[1], words[2]);
-      case this.COMMANDS.LEAVE:
+      case LEAVE:
         return this.handleRemoveVehicle(parseInt(words[1]));
-      case this.COMMANDS.STATUS:
+      case STATUS:
         return this.handleParkinglotStatus();
-      case this.COMMANDS.REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR:
+      case REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR:
         return this.handleRegistractionNosForVehicleColor(words[1]);
-      case this.COMMANDS.SLOT_NUMBERS_FOR_CARS_WITH_COLOUR:
+      case SLOT_NUMBERS_FOR_CARS_WITH_COLOUR:
         return this.handleSlotNosForVehicleColor(words[1]);
-      case this.COMMANDS.SLOT_NUMBER_FOR_REGISTRATION_NUMBER:
+      case SLOT_NUMBER_FOR_REGISTRATION_NUMBER:
         return this.handleSlotNoForVehicleRegistractionNo(words[1]);
       default:
         throw new Error('Invalid parking lot command');
