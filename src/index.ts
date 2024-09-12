@@ -1,5 +1,5 @@
-import { executeCommandsFromFile } from './utils/fileCommands';
-import { CLIView } from './views/CLIView';
+import { executeCommandsFromFile } from './utils/FileCommands';
+import { CLIView } from './views/CliView';
 
 const args = process.argv.slice(2);
 if (args.length > 0) {
