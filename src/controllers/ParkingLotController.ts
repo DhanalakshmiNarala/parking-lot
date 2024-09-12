@@ -42,9 +42,13 @@ export class ParkingLotController {
   }
 
   handleVehicleParking(registeredNumber: string, color: string) {
-    const vehicle = new Vehicle(registeredNumber, color);
-    const slotNumber = this.parkingLot.parkVehicle(vehicle);
-    return `Allocated slot number: ${slotNumber}`;
+    try {
+      const vehicle = new Vehicle(registeredNumber, color);
+      const slotNumber = this.parkingLot.parkVehicle(vehicle);
+      return `Allocated slot number: ${slotNumber}`;
+    } catch (error) {
+      return `Sorry, parking lot is full`;
+    }
   }
 
   handleRemoveVehicle(slotNumber: number) {

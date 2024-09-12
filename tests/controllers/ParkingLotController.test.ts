@@ -17,20 +17,23 @@ describe('ParkingLotController', () => {
   });
 
   it('should park vehicle in parking lot', () => {
-    const parkingLot = new ParkingLot(6);
+    const parkingLot = new ParkingLot(3);
     const controller = new ParkingLotController(parkingLot);
 
     const commandOne = 'park KA-01-HH-1234 White';
     const commandTwo = 'park KA-01-BB-0001 Black';
     const commandThree = 'park KA-01-HH-7777 Red';
+    const commandFour = 'park KA-01-HH-3141 Black';
 
     const messageOne = controller.processCommand(commandOne);
     const messageTwo = controller.processCommand(commandTwo);
     const messageThree = controller.processCommand(commandThree);
+    const messageFour = controller.processCommand(commandFour);
 
     expect(messageOne).toBe('Allocated slot number: 1');
     expect(messageTwo).toBe('Allocated slot number: 2');
     expect(messageThree).toBe('Allocated slot number: 3');
+    expect(messageFour).toBe('Sorry, parking lot is full');
   });
 
   it('should leave parked vehicle from parking lot', () => {
