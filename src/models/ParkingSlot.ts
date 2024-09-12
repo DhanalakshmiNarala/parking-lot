@@ -1,6 +1,6 @@
 import { Vehicle } from './Vehicle';
 
-export class ParkingSpot {
+export class ParkingSlot {
   private position: number;
   private available: boolean;
   private vehicle: Vehicle | null = null;

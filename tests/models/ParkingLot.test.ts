@@ -7,16 +7,16 @@ describe('Parking Lot', () => {
     expect(parkingLot.getCapacity()).toBe(5);
   });
 
-  it('should create parking spots with default availability true', () => {
+  it('should create parking slots with default availability true', () => {
     const parkingLot = new ParkingLot(5);
 
-    const spots = parkingLot.getParkingSpots();
+    const slots = parkingLot.getParkingSlots();
     for (let i = 0; i < 5; i++) {
-      expect(spots[i].isAvailable()).toBe(true);
+      expect(slots[i].isAvailable()).toBe(true);
     }
   });
 
-  it('should park vehicle at the earlier spot', () => {
+  it('should park vehicle at the earlier slot', () => {
     const parkingLot = new ParkingLot(5);
     const vehicleOne = new Vehicle('xyz-123', 'White');
     const vehicleTwo = new Vehicle('abc-123', 'Black');
@@ -28,17 +28,17 @@ describe('Parking Lot', () => {
     expect(vehicleTwoPosition).toBe(2);
   });
 
-  it('should return spot availability', () => {
+  it('should return slot availability', () => {
     const parkingLot = new ParkingLot(5);
     const vehicleOne = new Vehicle('xyz-123', 'White');
 
     const vehicleOnePosition = parkingLot.parkVehicle(vehicleOne);
 
-    expect(parkingLot.isSpotAvailable(vehicleOnePosition)).toBe(false);
-    expect(parkingLot.isSpotAvailable(2)).toBe(true);
+    expect(parkingLot.isSlotAvailable(vehicleOnePosition)).toBe(false);
+    expect(parkingLot.isSlotAvailable(2)).toBe(true);
   });
 
-  it('should remove vehicle from the spot', () => {
+  it('should remove vehicle from the slot', () => {
     const parkingLot = new ParkingLot(5);
     const vehicleOne = new Vehicle('xyz-123', 'White');
     const vehicleTwo = new Vehicle('abc-123', 'Black');
@@ -48,8 +48,8 @@ describe('Parking Lot', () => {
 
     parkingLot.removeVehicle(vehicleOne);
 
-    expect(parkingLot.isSpotAvailable(vehicleOnePosition)).toBe(true);
-    expect(parkingLot.isSpotAvailable(vehicleTwoPosition)).toBe(false);
+    expect(parkingLot.isSlotAvailable(vehicleOnePosition)).toBe(true);
+    expect(parkingLot.isSlotAvailable(vehicleTwoPosition)).toBe(false);
   });
 
   it('should get vehicle registered numbers whose color is white', () => {
@@ -71,7 +71,7 @@ describe('Parking Lot', () => {
     expect(registeredNumbers).toEqual(expectedNumbers);
   });
 
-  it('should get parking lot spot number whose color is white', () => {
+  it('should get parking lot slot number whose color is white', () => {
     const parkingLot = new ParkingLot(5);
     const vehicleOne = new Vehicle('xyz-123', 'White');
     const vehicleTwo = new Vehicle('abc-123', 'Black');
@@ -83,13 +83,13 @@ describe('Parking Lot', () => {
     parkingLot.parkVehicle(vehicleThree);
     parkingLot.parkVehicle(vehicleFour);
 
-    const spotNumbers = parkingLot.getSpotNumbersWithVehicleColor('White');
+    const slotNumbers = parkingLot.getSlotNumbersWithVehicleColor('White');
     const expectedNumbers = [1, 3];
 
-    expect(spotNumbers).toEqual(expectedNumbers);
+    expect(slotNumbers).toEqual(expectedNumbers);
   });
 
-  it('should get parking lot spot number for given vehicle registered number', () => {
+  it('should get parking lot slot number for given vehicle registered number', () => {
     const parkingLot = new ParkingLot(5);
     const vehicleOne = new Vehicle('xyz-123', 'White');
     const vehicleTwo = new Vehicle('abc-123', 'Black');
@@ -99,8 +99,8 @@ describe('Parking Lot', () => {
     parkingLot.parkVehicle(vehicleTwo);
     parkingLot.parkVehicle(vehicleThree);
 
-    const spotNumber = parkingLot.getSpotNumberForRegisteredNumber('abc-123');
+    const slotNumber = parkingLot.getSlotNumberForRegisteredNumber('abc-123');
 
-    expect(spotNumber).toEqual(2);
+    expect(slotNumber).toEqual(2);
   });
 });

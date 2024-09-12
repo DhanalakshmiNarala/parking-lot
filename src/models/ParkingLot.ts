@@ -1,78 +1,78 @@
-import { ParkingSpot } from './ParkingSpot';
+import { ParkingSlot } from './ParkingSlot';
 import { Vehicle } from './Vehicle';
 
 export class ParkingLot {
   private capacity: number;
-  private spots: ParkingSpot[];
+  private slots: ParkingSlot[];
 
   constructor(capacity: number) {
     this.capacity = capacity;
-    this.spots = this.createParkingSpots();
+    this.slots = this.createParkingSlots();
   }
 
-  private createParkingSpots(): ParkingSpot[] {
-    const spots: ParkingSpot[] = [];
+  private createParkingSlots(): ParkingSlot[] {
+    const slots: ParkingSlot[] = [];
     for (let i = 0; i < this.capacity; i++) {
-      spots[i] = new ParkingSpot(i + 1, true);
+      slots[i] = new ParkingSlot(i + 1, true);
     }
-    return spots;
+    return slots;
   }
 
   getCapacity(): number {
     return this.capacity;
   }
 
-  getParkingSpots(): ParkingSpot[] {
-    return this.spots;
+  getParkingSlots(): ParkingSlot[] {
+    return this.slots;
   }
 
   parkVehicle(vehicle: Vehicle): number {
-    const availableSpot = this.spots.find((spot) => spot.isAvailable());
-    if (availableSpot) {
-      availableSpot.assignVehicle(vehicle);
-      return availableSpot.getPosition();
+    const availableSlot = this.slots.find((slot) => slot.isAvailable());
+    if (availableSlot) {
+      availableSlot.assignVehicle(vehicle);
+      return availableSlot.getPosition();
     }
 
     throw new Error('Parking lot is fully occupied');
   }
 
-  isSpotAvailable(spotNumber: number): boolean {
-    return this.spots[spotNumber - 1].isAvailable();
+  isSlotAvailable(slotNumber: number): boolean {
+    return this.slots[slotNumber - 1].isAvailable();
   }
 
   removeVehicle(vehicle: Vehicle): void {
-    const allocatedSpot = this.spots.find(
-      (spot) =>
-        spot.getAssignedVehicle()?.getRegisteredNumber() ==
+    const allocatedSlot = this.slots.find(
+      (slot) =>
+        slot.getAssignedVehicle()?.getRegisteredNumber() ==
         vehicle.getRegisteredNumber()
     );
 
-    if (allocatedSpot) {
-      return allocatedSpot.removeVehicle();
+    if (allocatedSlot) {
+      return allocatedSlot.removeVehicle();
     }
 
     throw new Error('Vehicle not found in parking lot');
   }
 
   getVehicleRegisteredNumbersWithColor(color: string) {
-    return this.spots
-      .filter((spot) => spot.getAssignedVehicle()?.getColor() == color)
-      .map((spot) => spot.getAssignedVehicle()?.getRegisteredNumber());
+    return this.slots
+      .filter((slot) => slot.getAssignedVehicle()?.getColor() == color)
+      .map((slot) => slot.getAssignedVehicle()?.getRegisteredNumber());
   }
 
-  getSpotNumbersWithVehicleColor(color: string): number[] {
-    return this.spots
-      .filter((spot) => spot.getAssignedVehicle()?.getColor() == color)
-      .map((spot) => spot.getPosition());
+  getSlotNumbersWithVehicleColor(color: string): number[] {
+    return this.slots
+      .filter((slot) => slot.getAssignedVehicle()?.getColor() == color)
+      .map((slot) => slot.getPosition());
   }
 
-  getSpotNumberForRegisteredNumber(registeredNumber: string): number {
-    const allocatedSpot = this.spots.find(
-      (spot) =>
-        spot.getAssignedVehicle()?.getRegisteredNumber() == registeredNumber
+  getSlotNumberForRegisteredNumber(registeredNumber: string): number {
+    const allocatedSlot = this.slots.find(
+      (slot) =>
+        slot.getAssignedVehicle()?.getRegisteredNumber() == registeredNumber
     );
-    if (allocatedSpot) {
-      return allocatedSpot.getPosition();
+    if (allocatedSlot) {
+      return allocatedSlot.getPosition();
     }
 
     throw new Error(
