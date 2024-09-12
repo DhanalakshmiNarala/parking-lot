@@ -62,4 +62,14 @@ export class ParkingLot {
     }
     return registeredNumbers;
   }
+
+  getSpotNumbersWithVehicleColor(color: string) {
+    const spotNumbers = [];
+    for (let i = 0; i < this.capacity; i++) {
+      if (this.spots[i].getAssignedVehicle()?.getColor() == color) {
+        spotNumbers.push(this.spots[i].getPosition());
+      }
+    }
+    return spotNumbers;
+  }
 }

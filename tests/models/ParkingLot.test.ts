@@ -70,4 +70,22 @@ describe('Parking Lot', () => {
 
     expect(registeredNumbers).toEqual(expectedNumbers);
   });
+
+  it('should get parking lot spot number whose color is white', () => {
+    const parkingLot = new ParkingLot(5);
+    const vehicleOne = new Vehicle('xyz-123', 'White');
+    const vehicleTwo = new Vehicle('abc-123', 'Black');
+    const vehicleThree = new Vehicle('def-123', 'White');
+    const vehicleFour = new Vehicle('uvf-123', 'Blue');
+
+    parkingLot.parkVehicle(vehicleOne);
+    parkingLot.parkVehicle(vehicleTwo);
+    parkingLot.parkVehicle(vehicleThree);
+    parkingLot.parkVehicle(vehicleFour);
+
+    const spotNumbers = parkingLot.getSpotNumbersWithVehicleColor('White');
+    const expectedNumbers = [1, 3];
+
+    expect(spotNumbers).toEqual(expectedNumbers);
+  });
 });
