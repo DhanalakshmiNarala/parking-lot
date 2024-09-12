@@ -27,13 +27,13 @@ export class ParkingLot {
   }
 
   parkVehicle(vehicle: Vehicle): number {
-    for (let i = 0; i < this.capacity; i++) {
-      if (this.spots[i].isAvailable()) {
-        this.spots[i].assignVehicle(vehicle);
-        return this.spots[i].getPosition();
-      }
+    const availableSpot = this.spots.find((spot) => spot.isAvailable());
+    if (availableSpot) {
+      availableSpot.assignVehicle(vehicle);
+      return availableSpot.getPosition();
     }
-    return -1;
+
+    throw new Error('Parking lot is fully occupied');
   }
 
   isSpotAvailable(spotNumber: number): boolean {
@@ -41,46 +41,42 @@ export class ParkingLot {
   }
 
   removeVehicle(vehicle: Vehicle): void {
-    for (let i = 0; i < this.capacity; i++) {
-      if (
-        this.spots[i].getAssignedVehicle()?.getRegisteredNumber() ==
+    const allocatedSpot = this.spots.find(
+      (spot) =>
+        spot.getAssignedVehicle()?.getRegisteredNumber() ==
         vehicle.getRegisteredNumber()
-      ) {
-        return this.spots[i].removeVehicle();
-      }
+    );
+
+    if (allocatedSpot) {
+      return allocatedSpot.removeVehicle();
     }
+
+    throw new Error('Vehicle not found in parking lot');
   }
 
   getVehicleRegisteredNumbersWithColor(color: string) {
-    const registeredNumbers = [];
-    for (let i = 0; i < this.capacity; i++) {
-      if (this.spots[i].getAssignedVehicle()?.getColor() == color) {
-        registeredNumbers.push(
-          this.spots[i].getAssignedVehicle()?.getRegisteredNumber()
-        );
-      }
-    }
-    return registeredNumbers;
+    return this.spots
+      .filter((spot) => spot.getAssignedVehicle()?.getColor() == color)
+      .map((spot) => spot.getAssignedVehicle()?.getRegisteredNumber());
   }
 
-  getSpotNumbersWithVehicleColor(color: string) {
-    const spotNumbers = [];
-    for (let i = 0; i < this.capacity; i++) {
-      if (this.spots[i].getAssignedVehicle()?.getColor() == color) {
-        spotNumbers.push(this.spots[i].getPosition());
-      }
-    }
-    return spotNumbers;
+  getSpotNumbersWithVehicleColor(color: string): number[] {
+    return this.spots
+      .filter((spot) => spot.getAssignedVehicle()?.getColor() == color)
+      .map((spot) => spot.getPosition());
   }
 
-  getSpotNumbersForRegisteredNumber(registeredNumber: string) {
-    for (let i = 0; i < this.capacity; i++) {
-      if (
-        this.spots[i].getAssignedVehicle()?.getRegisteredNumber() ==
-        registeredNumber
-      ) {
-        return this.spots[i].getPosition();
-      }
+  getSpotNumberForRegisteredNumber(registeredNumber: string): number {
+    const allocatedSpot = this.spots.find(
+      (spot) =>
+        spot.getAssignedVehicle()?.getRegisteredNumber() == registeredNumber
+    );
+    if (allocatedSpot) {
+      return allocatedSpot.getPosition();
     }
+
+    throw new Error(
+      'Vehicle with given registered number not found in parking lot'
+    );
   }
 }

@@ -99,7 +99,7 @@ describe('Parking Lot', () => {
     parkingLot.parkVehicle(vehicleTwo);
     parkingLot.parkVehicle(vehicleThree);
 
-    const spotNumber = parkingLot.getSpotNumbersForRegisteredNumber('abc-123');
+    const spotNumber = parkingLot.getSpotNumberForRegisteredNumber('abc-123');
 
     expect(spotNumber).toEqual(2);
   });
