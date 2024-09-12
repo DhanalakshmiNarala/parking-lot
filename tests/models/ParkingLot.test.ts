@@ -7,7 +7,7 @@ describe('Parking Lot', () => {
     expect(parkingLot.getCapacity()).toBe(5);
   });
 
-  it('Should create parking spots with default availability true', () => {
+  it('should create parking spots with default availability true', () => {
     const parkingLot = new ParkingLot(5);
 
     const spots = parkingLot.getParkingSpots();
@@ -16,7 +16,7 @@ describe('Parking Lot', () => {
     }
   });
 
-  it('Should park vehicle at the earlier spot', () => {
+  it('should park vehicle at the earlier spot', () => {
     const parkingLot = new ParkingLot(5);
     const vehicleOne = new Vehicle('xyz-123', 'White');
     const vehicleTwo = new Vehicle('abc-123', 'Black');
@@ -26,5 +26,15 @@ describe('Parking Lot', () => {
 
     expect(vehicleOnePosition).toBe(1);
     expect(vehicleTwoPosition).toBe(2);
+  });
+
+  it('should return spot availability', () => {
+    const parkingLot = new ParkingLot(5);
+    const vehicleOne = new Vehicle('xyz-123', 'White');
+
+    const vehicleOnePosition = parkingLot.parkVehicle(vehicleOne);
+
+    expect(parkingLot.isSpotAvailable(vehicleOnePosition)).toBe(false);
+    expect(parkingLot.isSpotAvailable(2)).toBe(true);
   });
 });

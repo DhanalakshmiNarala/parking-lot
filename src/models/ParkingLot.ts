@@ -35,4 +35,8 @@ export class ParkingLot {
     }
     return -1;
   }
+
+  isSpotAvailable(spotNumber: number): boolean {
+    return this.spots[spotNumber - 1].isAvailable();
+  }
 }
