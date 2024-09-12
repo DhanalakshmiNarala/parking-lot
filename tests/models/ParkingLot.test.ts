@@ -51,4 +51,23 @@ describe('Parking Lot', () => {
     expect(parkingLot.isSpotAvailable(vehicleOnePosition)).toBe(true);
     expect(parkingLot.isSpotAvailable(vehicleTwoPosition)).toBe(false);
   });
+
+  it('should get vehicle registered numbers whose color is white', () => {
+    const parkingLot = new ParkingLot(5);
+    const vehicleOne = new Vehicle('xyz-123', 'White');
+    const vehicleTwo = new Vehicle('abc-123', 'Black');
+    const vehicleThree = new Vehicle('def-123', 'White');
+    const vehicleFour = new Vehicle('uvf-123', 'Blue');
+
+    parkingLot.parkVehicle(vehicleOne);
+    parkingLot.parkVehicle(vehicleTwo);
+    parkingLot.parkVehicle(vehicleThree);
+    parkingLot.parkVehicle(vehicleFour);
+
+    const registeredNumbers =
+      parkingLot.getVehicleRegisteredNumbersWithColor('White');
+    const expectedNumbers = ['xyz-123', 'def-123'];
+
+    expect(registeredNumbers).toEqual(expectedNumbers);
+  });
 });

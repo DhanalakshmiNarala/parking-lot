@@ -50,4 +50,16 @@ export class ParkingLot {
       }
     }
   }
+
+  getVehicleRegisteredNumbersWithColor(color: string) {
+    const registeredNumbers = [];
+    for (let i = 0; i < this.capacity; i++) {
+      if (this.spots[i].getAssignedVehicle()?.getColor() == color) {
+        registeredNumbers.push(
+          this.spots[i].getAssignedVehicle()?.getRegisteredNumber()
+        );
+      }
+    }
+    return registeredNumbers;
+  }
 }
