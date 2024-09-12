@@ -1,6 +1,9 @@
+import { Vehicle } from './Vehicle';
+
 export class ParkingSpot {
   private position: number;
   private available: boolean;
+  private vehicle: Vehicle | null = null;
 
   constructor(position: number, available: boolean) {
     this.position = position;
@@ -13,5 +16,19 @@ export class ParkingSpot {
 
   isAvailable(): boolean {
     return this.available;
+  }
+
+  assignVehicle(vehicle: Vehicle): void {
+    this.vehicle = vehicle;
+    this.available = false;
+  }
+
+  removeVehicle(): void {
+    this.vehicle = null;
+    this.available = true;
+  }
+
+  getAssignedVehicle(): Vehicle | null {
+    return this.vehicle;
   }
 }
