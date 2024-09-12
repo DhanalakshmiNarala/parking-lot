@@ -47,4 +47,27 @@ describe('ParkingLotController', () => {
 
     expect(message).toBe('Slot number 2 is free');
   });
+
+  it('should give parking lot status', () => {
+    const parkingLot = new ParkingLot(3);
+    const controller = new ParkingLotController(parkingLot);
+
+    const commandOne = 'park KA-01-HH-1234 White';
+    const commandTwo = 'park KA-01-BB-0001 Black';
+    const commandThree = 'park KA-01-HH-7777 Red';
+    const commandFour = 'status';
+
+    controller.processCommand(commandOne);
+    controller.processCommand(commandTwo);
+    controller.processCommand(commandThree);
+
+    const message = controller.processCommand(commandFour);
+    const lineOne = 'Slot No.\tRegistration No\tColour';
+    const lineTwo = '1\tKA-01-HH-1234\tWhite';
+    const lineThree = '2\tKA-01-BB-0001\tBlack';
+    const lineFour = '3\tKA-01-HH-7777\tRed';
+    const expectedMessage = [lineOne, lineTwo, lineThree, lineFour].join('\n');
+
+    expect(message).toBe(expectedMessage);
+  });
 });

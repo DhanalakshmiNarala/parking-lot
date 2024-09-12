@@ -1,4 +1,5 @@
 import { ParkingLot } from '../models/ParkingLot';
+import { ParkingSlot } from '../models/ParkingSlot';
 import { Vehicle } from '../models/Vehicle';
 
 export class ParkingLotController {
@@ -8,6 +9,7 @@ export class ParkingLotController {
     CREATE_PARKING_LOT: 'create_parking_lot',
     PARK: 'park',
     LEAVE: 'leave',
+    STATUS: 'status',
   };
 
   constructor(parkingLot: ParkingLot) {
@@ -23,6 +25,8 @@ export class ParkingLotController {
         return this.handleVehicleParking(words[1], words[2]);
       case this.COMMANDS.LEAVE:
         return this.handleRemoveVehicle(parseInt(words[1]));
+      case this.COMMANDS.STATUS:
+        return this.handleParkinglotStatus();
       default:
         throw new Error('Invalid parking lot command');
     }
@@ -46,5 +50,19 @@ export class ParkingLotController {
   handleRemoveVehicle(slotNumber: number) {
     this.parkingLot.removeVehicle(slotNumber);
     return `Slot number ${slotNumber} is free`;
+  }
+
+  handleParkinglotStatus() {
+    const header = 'Slot No.\tRegistration No\tColour\n';
+
+    const slots: ParkingSlot[] = this.parkingLot.getParkingSlots();
+    const vehiclesInfo = slots
+      .map((slot) => {
+        const vehicle = slot.getAssignedVehicle();
+        return `${slot.getPosition()}\t${vehicle?.getRegisteredNumber()}\t${vehicle?.getColor()}`;
+      })
+      .join('\n');
+
+    return header + vehiclesInfo;
   }
 }
