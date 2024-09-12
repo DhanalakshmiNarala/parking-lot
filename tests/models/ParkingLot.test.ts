@@ -88,4 +88,19 @@ describe('Parking Lot', () => {
 
     expect(spotNumbers).toEqual(expectedNumbers);
   });
+
+  it('should get parking lot spot number for given vehicle registered number', () => {
+    const parkingLot = new ParkingLot(5);
+    const vehicleOne = new Vehicle('xyz-123', 'White');
+    const vehicleTwo = new Vehicle('abc-123', 'Black');
+    const vehicleThree = new Vehicle('def-123', 'White');
+
+    parkingLot.parkVehicle(vehicleOne);
+    parkingLot.parkVehicle(vehicleTwo);
+    parkingLot.parkVehicle(vehicleThree);
+
+    const spotNumber = parkingLot.getSpotNumbersForRegisteredNumber('abc-123');
+
+    expect(spotNumber).toEqual(2);
+  });
 });

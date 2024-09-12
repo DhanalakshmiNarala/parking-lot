@@ -72,4 +72,15 @@ export class ParkingLot {
     }
     return spotNumbers;
   }
+
+  getSpotNumbersForRegisteredNumber(registeredNumber: string) {
+    for (let i = 0; i < this.capacity; i++) {
+      if (
+        this.spots[i].getAssignedVehicle()?.getRegisteredNumber() ==
+        registeredNumber
+      ) {
+        return this.spots[i].getPosition();
+      }
+    }
+  }
 }
