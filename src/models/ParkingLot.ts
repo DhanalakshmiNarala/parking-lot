@@ -39,4 +39,15 @@ export class ParkingLot {
   isSpotAvailable(spotNumber: number): boolean {
     return this.spots[spotNumber - 1].isAvailable();
   }
+
+  removeVehicle(vehicle: Vehicle): void {
+    for (let i = 0; i < this.capacity; i++) {
+      if (
+        this.spots[i].getAssignedVehicle()?.getRegisteredNumber() ==
+        vehicle.getRegisteredNumber()
+      ) {
+        return this.spots[i].removeVehicle();
+      }
+    }
+  }
 }

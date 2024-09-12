@@ -37,4 +37,18 @@ describe('Parking Lot', () => {
     expect(parkingLot.isSpotAvailable(vehicleOnePosition)).toBe(false);
     expect(parkingLot.isSpotAvailable(2)).toBe(true);
   });
+
+  it('should remove vehicle from the spot', () => {
+    const parkingLot = new ParkingLot(5);
+    const vehicleOne = new Vehicle('xyz-123', 'White');
+    const vehicleTwo = new Vehicle('abc-123', 'Black');
+
+    const vehicleOnePosition = parkingLot.parkVehicle(vehicleOne);
+    const vehicleTwoPosition = parkingLot.parkVehicle(vehicleTwo);
+
+    parkingLot.removeVehicle(vehicleOne);
+
+    expect(parkingLot.isSpotAvailable(vehicleOnePosition)).toBe(true);
+    expect(parkingLot.isSpotAvailable(vehicleTwoPosition)).toBe(false);
+  });
 });
