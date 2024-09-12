@@ -4,14 +4,18 @@
   "description": "Parking lot system for cars",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "format": "prettier --write \"src/**/*.{ts,js,json,css,md}\"",
+    "prepare": "husky install"
   },
   "author": "Dhanalakshmi N",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "jest": "^29.7.0",
+    "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "husky": "^8.0.0"
   }
 }
