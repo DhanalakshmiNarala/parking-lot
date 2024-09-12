@@ -73,4 +73,40 @@ describe('ParkingLotController', () => {
 
     expect(message).toBe(expectedMessage);
   });
+
+  it('should give vehicle registration numbers for the given vehicle color', () => {
+    const parkingLot = new ParkingLot(3);
+    const controller = new ParkingLotController(parkingLot);
+
+    const commandOne = 'park KA-01-HH-1234 White';
+    const commandTwo = 'park KA-01-BB-0001 Black';
+    const commandThree = 'park KA-01-HH-7777 White';
+    const commandFour = 'registration_numbers_for_cars_with_colour White';
+
+    controller.processCommand(commandOne);
+    controller.processCommand(commandTwo);
+    controller.processCommand(commandThree);
+
+    const message = controller.processCommand(commandFour);
+    const expectedMessage = ['KA-01-HH-1234', 'KA-01-HH-7777'].join(', ');
+
+    expect(message).toBe(expectedMessage);
+  });
+
+  it('should give slot numbers for the given vehicle color', () => {
+    const parkingLot = new ParkingLot(3);
+    const controller = new ParkingLotController(parkingLot);
+
+    const commandOne = 'park KA-01-HH-1234 White';
+    const commandTwo = 'park KA-01-BB-0001 Black';
+    const commandThree = 'park KA-01-HH-7777 White';
+    const commandFour = 'slot_numbers_for_cars_with_colour White';
+
+    controller.processCommand(commandOne);
+    controller.processCommand(commandTwo);
+    controller.processCommand(commandThree);
+
+    const message = controller.processCommand(commandFour);
+    expect(message).toBe(`1, 3`);
+  });
 });

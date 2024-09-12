@@ -10,6 +10,9 @@ export class ParkingLotController {
     PARK: 'park',
     LEAVE: 'leave',
     STATUS: 'status',
+    REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR:
+      'registration_numbers_for_cars_with_colour',
+    SLOT_NUMBERS_FOR_CARS_WITH_COLOUR: 'slot_numbers_for_cars_with_colour',
   };
 
   constructor(parkingLot: ParkingLot) {
@@ -27,6 +30,10 @@ export class ParkingLotController {
         return this.handleRemoveVehicle(parseInt(words[1]));
       case this.COMMANDS.STATUS:
         return this.handleParkinglotStatus();
+      case this.COMMANDS.REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR:
+        return this.handleRegistractionNosForVehicleColor(words[1]);
+      case this.COMMANDS.SLOT_NUMBERS_FOR_CARS_WITH_COLOUR:
+        return this.handleSlotNosForVehicleColor(words[1]);
       default:
         throw new Error('Invalid parking lot command');
     }
@@ -68,5 +75,16 @@ export class ParkingLotController {
       .join('\n');
 
     return header + vehiclesInfo;
+  }
+
+  handleRegistractionNosForVehicleColor(color: string) {
+    const registeredNumbers =
+      this.parkingLot.getVehicleRegisteredNumbersWithColor(color);
+    return registeredNumbers.join(', ');
+  }
+
+  handleSlotNosForVehicleColor(color: string) {
+    const slotNumbers = this.parkingLot.getSlotNumbersWithVehicleColor(color);
+    return slotNumbers.join(', ');
   }
 }
