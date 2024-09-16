@@ -5,5 +5,6 @@ const args = process.argv.slice(2);
 if (args.length > 0) {
   executeCommandsFromFile(args[0]);
 } else {
-  CLIView();
+  const cliView = new CLIView();
+  cliView.displayView();
 }
