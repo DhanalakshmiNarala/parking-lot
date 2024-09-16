@@ -17,22 +17,22 @@ export class ParkingLotController {
   }
 
   processCommand(userInput: string) {
-    const words = userInput.split(' ');
-    switch (words[0]) {
+    const [command, ...params] = userInput.split(' ');
+    switch (command) {
       case CREATE_PARKING_LOT:
-        return this.parkingLot.createParkingLot(parseInt(words[1]));
+        return this.parkingLot.createParkingLot(parseInt(params[0]));
       case PARK:
-        return this.parkingLot.parkVehicle(words[1], words[2]);
+        return this.parkingLot.parkVehicle(params[0], params[1]);
       case LEAVE:
-        return this.parkingLot.removeVehicle(parseInt(words[1]));
+        return this.parkingLot.removeVehicle(parseInt(params[0]));
       case STATUS:
         return this.parkingLot.status();
       case REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR:
-        return this.parkingLot.getVehicleRegisteredNumbersWithColor(words[1]);
+        return this.parkingLot.getVehicleRegisteredNumbersWithColor(params[0]);
       case SLOT_NUMBERS_FOR_CARS_WITH_COLOUR:
-        return this.parkingLot.getSlotNumbersWithVehicleColor(words[1]);
+        return this.parkingLot.getSlotNumbersWithVehicleColor(params[0]);
       case SLOT_NUMBER_FOR_REGISTRATION_NUMBER:
-        return this.parkingLot.getSlotNumberForRegisteredNumber(words[1]);
+        return this.parkingLot.getSlotNumberForRegisteredNumber(params[0]);
       default:
         throw new Error('Invalid parking lot command');
     }
