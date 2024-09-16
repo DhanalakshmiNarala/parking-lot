@@ -53,12 +53,6 @@ export class ParkingLot {
     return this.slots[slotNumber - 1].removeVehicle();
   }
 
-  getSlotNumbersWithVehicleColor(color: string): number[] {
-    return this.slots
-      .filter((slot) => slot.getAssignedVehicle()?.getColor() == color)
-      .map((slot) => slot.getPosition());
-  }
-
   getSlotNumberForRegisteredNumber(registeredNumber: string): number {
     const allocatedSlot = this.slots.find(
       (slot) =>

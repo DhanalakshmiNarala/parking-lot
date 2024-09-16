@@ -33,17 +33,12 @@ export class ParkingLotController {
       case REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR:
         return this.parkingLot.getVehicleRegisteredNumbersWithColor(words[1]);
       case SLOT_NUMBERS_FOR_CARS_WITH_COLOUR:
-        return this.handleSlotNosForVehicleColor(words[1]);
+        return this.parkingLot.getSlotNumbersWithVehicleColor(words[1]);
       case SLOT_NUMBER_FOR_REGISTRATION_NUMBER:
         return this.handleSlotNoForVehicleRegistractionNo(words[1]);
       default:
         throw new Error('Invalid parking lot command');
     }
-  }
-
-  handleSlotNosForVehicleColor(color: string) {
-    const slotNumbers = this.parkingLot.getSlotNumbersWithVehicleColor(color);
-    return slotNumbers.join(', ');
   }
 
   handleSlotNoForVehicleRegistractionNo(registeredNumber: string) {

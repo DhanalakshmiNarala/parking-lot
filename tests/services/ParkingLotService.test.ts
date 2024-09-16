@@ -64,4 +64,14 @@ describe('ParkingLotService', () => {
     const expectedMessage = ['KA-01-HH-1234', 'KA-01-HH-7777'].join(', ');
     expect(message).toBe(expectedMessage);
   });
+
+  it('should give slot numbers for the given vehicle color', () => {
+    service.createParkingLot(3);
+    service.parkVehicle('KA-01-HH-1234', 'White');
+    service.parkVehicle('KA-01-BB-0001', 'Black');
+    service.parkVehicle('KA-01-HH-7777', 'White');
+
+    const message = service.getSlotNumbersWithVehicleColor('White');
+    expect(message).toBe(`1, 3`);
+  });
 });
