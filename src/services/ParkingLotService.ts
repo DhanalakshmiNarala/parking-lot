@@ -47,4 +47,14 @@ export class ParkingLotService {
 
     return header + vehiclesInfo;
   }
+
+  getVehicleRegisteredNumbersWithColor(color: string) {
+    const slots = this.parkingLot.getParkingSlots();
+
+    const registeredNumbers = slots
+      .filter((slot) => slot.getAssignedVehicle()?.getColor() == color)
+      .map((slot) => slot.getAssignedVehicle()?.getRegisteredNumber());
+
+    return registeredNumbers.join(', ');
+  }
 }
