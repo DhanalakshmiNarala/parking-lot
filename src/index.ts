@@ -1,5 +1,5 @@
 import { FileProcessor } from './utils/FileProcessor';
-import { CLIView } from './views/CliView';
+import { CLIView } from './views/CLIView';
 
 const main = () => {
   const args = process.argv.slice(2);
