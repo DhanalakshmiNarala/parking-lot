@@ -1,6 +1,7 @@
 import { ParkingLot } from '../models/ParkingLot';
 import { ParkingSlot } from '../models/ParkingSlot';
 import { Vehicle } from '../models/Vehicle';
+import { ArgumentError } from '../utils/ErrorTypes';
 
 export class ParkingLotService {
   private parkingLot: ParkingLot;
@@ -11,7 +12,7 @@ export class ParkingLotService {
 
   createParkingLot(capacity: number) {
     if (capacity < 0) {
-      throw new Error('Invalid parking lot size');
+      throw new ArgumentError('Capacity', 'It must be greater than 0.');
     }
 
     this.parkingLot.setCapacity(capacity);
@@ -33,7 +34,10 @@ export class ParkingLotService {
 
   removeVehicle(slotNumber: number): string {
     if (slotNumber < 0 || slotNumber > this.parkingLot.getCapacity()) {
-      throw new Error('Invalid slot number');
+      throw new ArgumentError(
+        'Slot number',
+        'It must be greater than 0 and less than parking lot size.'
+      );
     }
 
     const slots = this.parkingLot.getParkingSlots();

@@ -7,7 +7,7 @@ describe('ParkingLotService', () => {
     it('should handle invalid capacity', () => {
       expect(() => {
         service.createParkingLot(-1);
-      }).toThrow('Invalid parking lot size');
+      }).toThrow("Invalid 'Capacity': It must be greater than 0.");
     });
 
     it('should create parking lot with given capacity', () => {

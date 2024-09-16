@@ -8,6 +8,7 @@ import {
   STATUS,
 } from '../constants/Commands';
 import { ParkingLotService } from '../services/ParkingLotService';
+import { ArgumentError } from '../utils/ErrorTypes';
 
 export class ParkingLotController {
   private parkingLot: ParkingLotService;
@@ -34,7 +35,7 @@ export class ParkingLotController {
       case SLOT_NUMBER_FOR_REGISTRATION_NUMBER:
         return this.parkingLot.getSlotNumberForRegisteredNumber(params[0]);
       default:
-        throw new Error('Invalid parking lot command');
+        throw new ArgumentError('Command', 'Should be allowed command type');
     }
   }
 }
