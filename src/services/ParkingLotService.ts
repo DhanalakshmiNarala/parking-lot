@@ -24,7 +24,7 @@ export class ParkingLotService {
     const availableSlot = slots.find((slot) => slot.isAvailable());
     if (availableSlot) {
       const vehicle = new Vehicle(registeredNumber, color);
-      availableSlot.assignVehicle(vehicle);
+      availableSlot.parkVehicle(vehicle);
       return `Allocated slot number: ${availableSlot.getPosition()}`;
     }
 

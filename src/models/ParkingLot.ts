@@ -10,14 +10,6 @@ export class ParkingLot {
     this.slots = this.createParkingSlots();
   }
 
-  private createParkingSlots(): ParkingSlot[] {
-    const slots: ParkingSlot[] = [];
-    for (let i = 0; i < this.capacity; i++) {
-      slots[i] = new ParkingSlot(i + 1, true);
-    }
-    return slots;
-  }
-
   setCapacity(capacity: number): void {
     this.capacity = capacity;
     this.slots = this.createParkingSlots();
@@ -33,5 +25,13 @@ export class ParkingLot {
 
   isSlotAvailable(slotNumber: number): boolean {
     return this.slots[slotNumber - 1].isAvailable();
+  }
+
+  private createParkingSlots(): ParkingSlot[] {
+    const slots: ParkingSlot[] = [];
+    for (let i = 0; i < this.capacity; i++) {
+      slots[i] = new ParkingSlot(i + 1, true);
+    }
+    return slots;
   }
 }
