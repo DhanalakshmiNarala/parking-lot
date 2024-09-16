@@ -1,4 +1,5 @@
 import { ParkingLot } from '../models/ParkingLot';
+import { ParkingSlot } from '../models/ParkingSlot';
 import { Vehicle } from '../models/Vehicle';
 
 export class ParkingLotService {
@@ -27,8 +28,23 @@ export class ParkingLotService {
     }
   }
 
-  removeVehicle(slotNumber: number) {
+  removeVehicle(slotNumber: number): string {
     this.parkingLot.removeVehicle(slotNumber);
     return `Slot number ${slotNumber} is free`;
+  }
+
+  status() {
+    const header = 'Slot No.\tRegistration No\tColour\n';
+
+    const slots: ParkingSlot[] = this.parkingLot.getParkingSlots();
+    const vehiclesInfo = slots
+      .filter((slot) => !slot.isAvailable())
+      .map((slot) => {
+        const vehicle = slot.getAssignedVehicle();
+        return `${slot.getPosition()}\t${vehicle?.getRegisteredNumber()}\t${vehicle?.getColor()}`;
+      })
+      .join('\n');
+
+    return header + vehiclesInfo;
   }
 }

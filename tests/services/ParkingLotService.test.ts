@@ -30,4 +30,27 @@ describe('ParkingLotService', () => {
     expect(messageTwo).toBe('Allocated slot number: 2');
     expect(messageThree).toBe('Sorry, parking lot is full');
   });
+
+  it('should leave parked vehicle from parking lot', () => {
+    service.createParkingLot(3);
+    service.parkVehicle('KA-01-HH-1234', 'White');
+    service.parkVehicle('KA-01-BB-0001', 'Black');
+
+    const message = service.removeVehicle(2);
+    expect(message).toBe('Slot number 2 is free');
+  });
+
+  it('should give parking lot status', () => {
+    service.createParkingLot(3);
+    service.parkVehicle('KA-01-HH-1234', 'White');
+    service.parkVehicle('KA-01-BB-0001', 'Black');
+
+    const message = service.status();
+    const lineOne = 'Slot No.\tRegistration No\tColour';
+    const lineTwo = '1\tKA-01-HH-1234\tWhite';
+    const lineThree = '2\tKA-01-BB-0001\tBlack';
+    const expectedMessage = [lineOne, lineTwo, lineThree].join('\n');
+
+    expect(message).toBe(expectedMessage);
+  });
 });

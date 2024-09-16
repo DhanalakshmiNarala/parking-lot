@@ -29,7 +29,7 @@ export class ParkingLotController {
       case LEAVE:
         return this.parkingLot.removeVehicle(parseInt(words[1]));
       case STATUS:
-        return this.handleParkinglotStatus();
+        return this.parkingLot.status();
       case REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR:
         return this.handleRegistractionNosForVehicleColor(words[1]);
       case SLOT_NUMBERS_FOR_CARS_WITH_COLOUR:
@@ -39,20 +39,6 @@ export class ParkingLotController {
       default:
         throw new Error('Invalid parking lot command');
     }
-  }
-
-  handleParkinglotStatus() {
-    const header = 'Slot No.\tRegistration No\tColour\n';
-
-    const slots: ParkingSlot[] = this.parkingLot.getParkingSlots();
-    const vehiclesInfo = slots
-      .map((slot) => {
-        const vehicle = slot.getAssignedVehicle();
-        return `${slot.getPosition()}\t${vehicle?.getRegisteredNumber()}\t${vehicle?.getColor()}`;
-      })
-      .join('\n');
-
-    return header + vehiclesInfo;
   }
 
   handleRegistractionNosForVehicleColor(color: string) {
