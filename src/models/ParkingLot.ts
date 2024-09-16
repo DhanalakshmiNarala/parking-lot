@@ -5,7 +5,7 @@ export class ParkingLot {
   private capacity: number;
   private slots: ParkingSlot[];
 
-  constructor(capacity: number) {
+  constructor(capacity = 0) {
     this.capacity = capacity;
     this.slots = this.createParkingSlots();
   }
@@ -16,6 +16,11 @@ export class ParkingLot {
       slots[i] = new ParkingSlot(i + 1, true);
     }
     return slots;
+  }
+
+  setCapacity(capacity: number): void {
+    this.capacity = capacity;
+    this.slots = this.createParkingSlots();
   }
 
   getCapacity(): number {
