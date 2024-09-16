@@ -6,7 +6,7 @@ import {
   SLOT_NUMBER_FOR_REGISTRATION_NUMBER,
   SLOT_NUMBERS_FOR_CARS_WITH_COLOUR,
   STATUS,
-} from '../constants/commands';
+} from '../constants/Commands';
 import { ParkingLotService } from '../services/ParkingLotService';
 
 export class ParkingLotController {
