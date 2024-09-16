@@ -31,25 +31,7 @@ export class ParkingLot {
     return this.slots;
   }
 
-  parkVehicle(vehicle: Vehicle): number {
-    const availableSlot = this.slots.find((slot) => slot.isAvailable());
-    if (availableSlot) {
-      availableSlot.assignVehicle(vehicle);
-      return availableSlot.getPosition();
-    }
-
-    throw new Error('Parking lot is fully occupied');
-  }
-
   isSlotAvailable(slotNumber: number): boolean {
     return this.slots[slotNumber - 1].isAvailable();
-  }
-
-  removeVehicle(slotNumber: number): void {
-    if (slotNumber < 0 || slotNumber > this.capacity) {
-      throw new Error('Invalid slot number');
-    }
-
-    return this.slots[slotNumber - 1].removeVehicle();
   }
 }

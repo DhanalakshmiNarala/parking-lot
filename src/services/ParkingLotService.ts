@@ -18,18 +18,26 @@ export class ParkingLotService {
     return `Created a parking lot with ${capacity} slots`;
   }
 
-  parkVehicle(registeredNumber: string, color: string) {
-    try {
+  parkVehicle(registeredNumber: string, color: string): string {
+    const slots = this.parkingLot.getParkingSlots();
+
+    const availableSlot = slots.find((slot) => slot.isAvailable());
+    if (availableSlot) {
       const vehicle = new Vehicle(registeredNumber, color);
-      const slotNumber = this.parkingLot?.parkVehicle(vehicle);
-      return `Allocated slot number: ${slotNumber}`;
-    } catch (error) {
-      return `Sorry, parking lot is full`;
+      availableSlot.assignVehicle(vehicle);
+      return `Allocated slot number: ${availableSlot.getPosition()}`;
     }
+
+    return `Sorry, parking lot is full`;
   }
 
   removeVehicle(slotNumber: number): string {
-    this.parkingLot.removeVehicle(slotNumber);
+    if (slotNumber < 0 || slotNumber > this.parkingLot.getCapacity()) {
+      throw new Error('Invalid slot number');
+    }
+
+    const slots = this.parkingLot.getParkingSlots();
+    slots[slotNumber - 1].removeVehicle();
     return `Slot number ${slotNumber} is free`;
   }
 
