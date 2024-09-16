@@ -52,18 +52,4 @@ export class ParkingLot {
 
     return this.slots[slotNumber - 1].removeVehicle();
   }
-
-  getSlotNumberForRegisteredNumber(registeredNumber: string): number {
-    const allocatedSlot = this.slots.find(
-      (slot) =>
-        slot.getAssignedVehicle()?.getRegisteredNumber() == registeredNumber
-    );
-    if (allocatedSlot) {
-      return allocatedSlot.getPosition();
-    }
-
-    throw new Error(
-      'Vehicle with given registered number not found in parking lot'
-    );
-  }
 }

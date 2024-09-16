@@ -74,4 +74,17 @@ describe('ParkingLotService', () => {
     const message = service.getSlotNumbersWithVehicleColor('White');
     expect(message).toBe(`1, 3`);
   });
+
+  it('should give slot numbers for the given vehicle registraction number', () => {
+    service.createParkingLot(3);
+    service.parkVehicle('KA-01-HH-1234', 'White');
+    service.parkVehicle('KA-01-BB-0001', 'Black');
+
+    const messageOne =
+      service.getSlotNumberForRegisteredNumber('KA-01-BB-0001');
+    const messageTwo = service.getSlotNumberForRegisteredNumber('KA-01-P-333');
+
+    expect(messageOne).toBe('2');
+    expect(messageTwo).toBe('Not found');
+  });
 });

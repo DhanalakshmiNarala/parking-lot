@@ -66,4 +66,18 @@ export class ParkingLotService {
       .map((slot) => slot.getPosition());
     return slotNumbers.join(', ');
   }
+
+  getSlotNumberForRegisteredNumber(registeredNumber: string): string {
+    const slots = this.parkingLot.getParkingSlots();
+
+    const allocatedSlot = slots.find(
+      (slot) =>
+        slot.getAssignedVehicle()?.getRegisteredNumber() == registeredNumber
+    );
+    if (allocatedSlot) {
+      return allocatedSlot.getPosition().toString();
+    }
+
+    return 'Not found';
+  }
 }

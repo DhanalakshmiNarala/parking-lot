@@ -7,9 +7,6 @@ import {
   SLOT_NUMBERS_FOR_CARS_WITH_COLOUR,
   STATUS,
 } from '../constants/commands';
-import { ParkingLot } from '../models/ParkingLot';
-import { ParkingSlot } from '../models/ParkingSlot';
-import { Vehicle } from '../models/Vehicle';
 import { ParkingLotService } from '../services/ParkingLotService';
 
 export class ParkingLotController {
@@ -35,19 +32,9 @@ export class ParkingLotController {
       case SLOT_NUMBERS_FOR_CARS_WITH_COLOUR:
         return this.parkingLot.getSlotNumbersWithVehicleColor(words[1]);
       case SLOT_NUMBER_FOR_REGISTRATION_NUMBER:
-        return this.handleSlotNoForVehicleRegistractionNo(words[1]);
+        return this.parkingLot.getSlotNumberForRegisteredNumber(words[1]);
       default:
         throw new Error('Invalid parking lot command');
-    }
-  }
-
-  handleSlotNoForVehicleRegistractionNo(registeredNumber: string) {
-    try {
-      return this.parkingLot
-        .getSlotNumberForRegisteredNumber(registeredNumber)
-        .toString();
-    } catch (error) {
-      return 'Not found';
     }
   }
 }

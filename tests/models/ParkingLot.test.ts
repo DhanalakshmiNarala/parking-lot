@@ -51,19 +51,4 @@ describe('Parking Lot', () => {
     expect(parkingLot.isSlotAvailable(vehicleOnePosition)).toBe(true);
     expect(parkingLot.isSlotAvailable(vehicleTwoPosition)).toBe(false);
   });
-
-  it('should get parking lot slot number for given vehicle registered number', () => {
-    const parkingLot = new ParkingLot(5);
-    const vehicleOne = new Vehicle('xyz-123', 'White');
-    const vehicleTwo = new Vehicle('abc-123', 'Black');
-    const vehicleThree = new Vehicle('def-123', 'White');
-
-    parkingLot.parkVehicle(vehicleOne);
-    parkingLot.parkVehicle(vehicleTwo);
-    parkingLot.parkVehicle(vehicleThree);
-
-    const slotNumber = parkingLot.getSlotNumberForRegisteredNumber('abc-123');
-
-    expect(slotNumber).toEqual(2);
-  });
 });
