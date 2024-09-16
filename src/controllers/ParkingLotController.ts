@@ -10,11 +10,12 @@ import {
 import { ParkingLot } from '../models/ParkingLot';
 import { ParkingSlot } from '../models/ParkingSlot';
 import { Vehicle } from '../models/Vehicle';
+import { ParkingLotService } from '../services/ParkingLotService';
 
 export class ParkingLotController {
-  private parkingLot: ParkingLot;
+  private parkingLot: ParkingLotService;
 
-  constructor(parkingLot: ParkingLot) {
+  constructor(parkingLot = new ParkingLotService()) {
     this.parkingLot = parkingLot;
   }
 
@@ -22,11 +23,11 @@ export class ParkingLotController {
     const words = userInput.split(' ');
     switch (words[0]) {
       case CREATE_PARKING_LOT:
-        return this.handleCreateParkingLot(parseInt(words[1]));
+        return this.parkingLot.createParkingLot(parseInt(words[1]));
       case PARK:
-        return this.handleVehicleParking(words[1], words[2]);
+        return this.parkingLot.parkVehicle(words[1], words[2]);
       case LEAVE:
-        return this.handleRemoveVehicle(parseInt(words[1]));
+        return this.parkingLot.removeVehicle(parseInt(words[1]));
       case STATUS:
         return this.handleParkinglotStatus();
       case REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR:
@@ -38,30 +39,6 @@ export class ParkingLotController {
       default:
         throw new Error('Invalid parking lot command');
     }
-  }
-
-  handleCreateParkingLot(capacity: number) {
-    if (capacity < 0) {
-      throw new Error('Invalid parking lot size');
-    }
-
-    this.parkingLot = new ParkingLot(capacity);
-    return `Created a parking lot with ${capacity} slots`;
-  }
-
-  handleVehicleParking(registeredNumber: string, color: string) {
-    try {
-      const vehicle = new Vehicle(registeredNumber, color);
-      const slotNumber = this.parkingLot.parkVehicle(vehicle);
-      return `Allocated slot number: ${slotNumber}`;
-    } catch (error) {
-      return `Sorry, parking lot is full`;
-    }
-  }
-
-  handleRemoveVehicle(slotNumber: number) {
-    this.parkingLot.removeVehicle(slotNumber);
-    return `Slot number ${slotNumber} is free`;
   }
 
   handleParkinglotStatus() {

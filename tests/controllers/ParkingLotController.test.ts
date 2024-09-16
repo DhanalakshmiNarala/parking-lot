@@ -2,9 +2,8 @@ import { ParkingLotController } from '../../src/controllers/ParkingLotController
 import { ParkingLot } from '../../src/models/ParkingLot';
 
 describe('ParkingLotController', () => {
-  it('should create parking lot with given capacity', () => {
-    const parkingLot = new ParkingLot(0);
-    const controller = new ParkingLotController(parkingLot);
+  it.only('should create parking lot with given capacity', () => {
+    const controller = new ParkingLotController();
 
     const commandOne = 'create_parking_lot 6';
     const commandTwo = 'create_parking_lot 2';
@@ -17,8 +16,7 @@ describe('ParkingLotController', () => {
   });
 
   it('should park vehicle in parking lot', () => {
-    const parkingLot = new ParkingLot(3);
-    const controller = new ParkingLotController(parkingLot);
+    const controller = new ParkingLotController();
 
     const commandOne = 'park KA-01-HH-1234 White';
     const commandTwo = 'park KA-01-BB-0001 Black';
@@ -37,8 +35,7 @@ describe('ParkingLotController', () => {
   });
 
   it('should leave parked vehicle from parking lot', () => {
-    const parkingLot = new ParkingLot(3);
-    const controller = new ParkingLotController(parkingLot);
+    const controller = new ParkingLotController();
 
     const commandOne = 'park KA-01-HH-1234 White';
     const commandTwo = 'park KA-01-BB-0001 Black';
@@ -52,8 +49,7 @@ describe('ParkingLotController', () => {
   });
 
   it('should give parking lot status', () => {
-    const parkingLot = new ParkingLot(3);
-    const controller = new ParkingLotController(parkingLot);
+    const controller = new ParkingLotController();
 
     const commandOne = 'park KA-01-HH-1234 White';
     const commandTwo = 'park KA-01-BB-0001 Black';
@@ -75,8 +71,7 @@ describe('ParkingLotController', () => {
   });
 
   it('should give vehicle registration numbers for the given vehicle color', () => {
-    const parkingLot = new ParkingLot(3);
-    const controller = new ParkingLotController(parkingLot);
+    const controller = new ParkingLotController();
 
     const commandOne = 'park KA-01-HH-1234 White';
     const commandTwo = 'park KA-01-BB-0001 Black';
@@ -94,8 +89,7 @@ describe('ParkingLotController', () => {
   });
 
   it('should give slot numbers for the given vehicle color', () => {
-    const parkingLot = new ParkingLot(3);
-    const controller = new ParkingLotController(parkingLot);
+    const controller = new ParkingLotController();
 
     const commandOne = 'park KA-01-HH-1234 White';
     const commandTwo = 'park KA-01-BB-0001 Black';
@@ -111,8 +105,7 @@ describe('ParkingLotController', () => {
   });
 
   it('should give slot numbers for the given vehicle registraction number', () => {
-    const parkingLot = new ParkingLot(3);
-    const controller = new ParkingLotController(parkingLot);
+    const controller = new ParkingLotController();
 
     const commandOne = 'park KA-01-HH-1234 White';
     const commandTwo = 'park KA-01-BB-0001 Black';

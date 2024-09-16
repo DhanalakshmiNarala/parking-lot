@@ -26,4 +26,9 @@ export class ParkingLotService {
       return `Sorry, parking lot is full`;
     }
   }
+
+  removeVehicle(slotNumber: number) {
+    this.parkingLot.removeVehicle(slotNumber);
+    return `Slot number ${slotNumber} is free`;
+  }
 }
