@@ -9,3 +9,5 @@ export const SLOT_NUMBERS_FOR_CARS_WITH_COLOUR =
   'slot_numbers_for_cars_with_colour';
 export const SLOT_NUMBER_FOR_REGISTRATION_NUMBER =
   'slot_number_for_registration_number';
+
+export const EXIT = 'exit';

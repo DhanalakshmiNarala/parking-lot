@@ -1,5 +1,6 @@
 import * as readline from 'readline';
 import { ParkingLotController } from '../controllers/ParkingLotController';
+import { EXIT } from '../constants/Commands';
 
 export class CLIView {
   private controller = new ParkingLotController();
@@ -9,13 +10,25 @@ export class CLIView {
     output: process.stdout,
   });
 
-  displayView() {
+  display() {
     this.inputReader.on('line', (input) => {
       try {
-        console.log(this.controller.processCommand(input.trim()));
+        const command = input.trim();
+        if (command.toLowerCase() === EXIT) {
+          this.handleExitCommand();
+        }
+
+        const message = this.controller.processCommand(command);
+        console.log(message);
       } catch (error) {
-        console.log(error);
+        console.log((error as Error).message);
       }
     });
+  }
+
+  private handleExitCommand() {
+    console.log('Exiting CLI...');
+    this.inputReader.close();
+    process.exit(0);
   }
 }

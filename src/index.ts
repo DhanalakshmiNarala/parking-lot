@@ -6,5 +6,5 @@ if (args.length > 0) {
   executeCommandsFromFile(args[0]);
 } else {
   const cliView = new CLIView();
-  cliView.displayView();
+  cliView.display();
 }
