@@ -48,7 +48,7 @@ export class ParkingLotService {
     const vehiclesInfo = slots
       .filter((slot) => !slot.isAvailable())
       .map((slot) => {
-        const vehicle = slot.getAssignedVehicle();
+        const vehicle = slot.getVehicle();
         return `${slot.getPosition()}\t${vehicle?.getRegisteredNumber()}\t${vehicle?.getColor()}`;
       })
       .join('\n');
@@ -60,8 +60,8 @@ export class ParkingLotService {
     const slots = this.parkingLot.getParkingSlots();
 
     const registeredNumbers = slots
-      .filter((slot) => slot.getAssignedVehicle()?.getColor() == color)
-      .map((slot) => slot.getAssignedVehicle()?.getRegisteredNumber());
+      .filter((slot) => slot.getVehicle()?.getColor() == color)
+      .map((slot) => slot.getVehicle()?.getRegisteredNumber());
 
     return registeredNumbers.join(', ');
   }
@@ -70,7 +70,7 @@ export class ParkingLotService {
     const slots = this.parkingLot.getParkingSlots();
 
     const slotNumbers = slots
-      .filter((slot) => slot.getAssignedVehicle()?.getColor() == color)
+      .filter((slot) => slot.getVehicle()?.getColor() == color)
       .map((slot) => slot.getPosition());
     return slotNumbers.join(', ');
   }
@@ -79,8 +79,7 @@ export class ParkingLotService {
     const slots = this.parkingLot.getParkingSlots();
 
     const allocatedSlot = slots.find(
-      (slot) =>
-        slot.getAssignedVehicle()?.getRegisteredNumber() == registeredNumber
+      (slot) => slot.getVehicle()?.getRegisteredNumber() == registeredNumber
     );
     if (allocatedSlot) {
       return allocatedSlot.getPosition().toString();

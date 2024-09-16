@@ -4,7 +4,7 @@ export class ParkingSlot {
   private position: number;
   private vehicle: Vehicle | null = null;
 
-  constructor(position: number, available: boolean) {
+  constructor(position: number) {
     this.position = position;
   }
 
@@ -12,7 +12,7 @@ export class ParkingSlot {
     return this.position;
   }
 
-  getAssignedVehicle(): Vehicle | null {
+  getVehicle(): Vehicle | null {
     return this.vehicle;
   }
 

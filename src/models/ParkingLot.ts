@@ -7,12 +7,12 @@ export class ParkingLot {
 
   constructor(capacity = 0) {
     this.capacity = capacity;
-    this.slots = this.createParkingSlots();
+    this.slots = this.createParkingSlots(capacity);
   }
 
   setCapacity(capacity: number): void {
     this.capacity = capacity;
-    this.slots = this.createParkingSlots();
+    this.slots = this.createParkingSlots(capacity);
   }
 
   getCapacity(): number {
@@ -27,10 +27,10 @@ export class ParkingLot {
     return this.slots[slotNumber - 1].isAvailable();
   }
 
-  private createParkingSlots(): ParkingSlot[] {
+  private createParkingSlots(capacity: number): ParkingSlot[] {
     const slots: ParkingSlot[] = [];
-    for (let i = 0; i < this.capacity; i++) {
-      slots[i] = new ParkingSlot(i + 1, true);
+    for (let i = 0; i < capacity; i++) {
+      slots[i] = new ParkingSlot(i + 1);
     }
     return slots;
   }
