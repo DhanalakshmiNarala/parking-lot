@@ -11,8 +11,12 @@ export class FileProcessor {
         return;
       }
 
-      const commands = data.split('\n');
-      this.processCommands(commands);
+      try {
+        const commands = data.split('\n');
+        this.processCommands(commands);
+      } catch (error) {
+        console.log((error as Error).message);
+      }
     });
   }
 
