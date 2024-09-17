@@ -1,11 +1,7 @@
-const baseRate = 50;
-const baseRateDurationInHours = 0.5; // 30 mins
-const perHourRate = 100; // Rate for after initial 30 mins
-
 export const getCostForParkingHours = (hours: number) => {
-  if (hours <= baseRateDurationInHours) {
-    return baseRate;
+  if (hours <= BASE_RATE_DURATION_IN_HOURS) {
+    return BASE_RATE;
   }
   const extraHours = hours - 0.5;
-  return baseRate + extraHours * perHourRate;
+  return BASE_RATE + extraHours * PER_HOUR_RATE;
 };
