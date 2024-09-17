@@ -1,4 +1,6 @@
 import { ParkingLotService } from '../../src/services/ParkingLotService';
+import { getCostForParkingHours } from '../../src/utils/CostCalculator';
+import { getTimeDifferenceInHours } from '../../src/utils/TimeHelpers';
 
 describe('ParkingLotService', () => {
   const service = new ParkingLotService();
@@ -34,10 +36,22 @@ describe('ParkingLotService', () => {
   it('should leave parked vehicle from parking lot', () => {
     service.createParkingLot(3);
     service.parkVehicle('KA-01-HH-1234', 'White');
+    const vehicleTwoParkedTime = new Date();
     service.parkVehicle('KA-01-BB-0001', 'Black');
 
+    const vehicleTwoRemovedTime = new Date();
     const message = service.removeVehicle(2);
-    expect(message).toBe('Slot number 2 is free');
+    const duration = getTimeDifferenceInHours(
+      vehicleTwoParkedTime,
+      vehicleTwoRemovedTime
+    );
+    const expectedCost = getCostForParkingHours(duration);
+
+    const lineOne = 'Slot number 2 is free';
+    const lineTwo = `Total parking cost: ${expectedCost}`;
+    const expectedMessage = [lineOne, lineTwo].join('\n');
+
+    expect(message).toBe(expectedMessage);
   });
 
   it('should give parking lot status', () => {

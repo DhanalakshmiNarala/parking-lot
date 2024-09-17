@@ -1,6 +1,7 @@
 import { ParkingLot } from '../models/ParkingLot';
 import { ParkingSlot } from '../models/ParkingSlot';
 import { Vehicle } from '../models/Vehicle';
+import { getCostForParkingHours } from '../utils/CostCalculator';
 import { ArgumentError } from '../utils/ErrorTypes';
 
 export class ParkingLotService {
@@ -41,8 +42,12 @@ export class ParkingLotService {
     }
 
     const slots = this.parkingLot.getParkingSlots();
-    slots[slotNumber - 1].removeVehicle();
-    return `Slot number ${slotNumber} is free`;
+    const duration = slots[slotNumber - 1].removeVehicle();
+    const cost = getCostForParkingHours(duration);
+
+    const lineOne = `Slot number ${slotNumber} is free`;
+    const lineTwo = `Total parking cost: ${cost}`;
+    return [lineOne, lineTwo].join('\n');
   }
 
   status() {
