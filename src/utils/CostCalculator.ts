@@ -1,4 +1,4 @@
-export const getCostForParkingHours = (hours: number) => {
+export const calculateCostOfParkingHours = (hours: number) => {
   if (hours <= BASE_RATE_DURATION_IN_HOURS) {
     return BASE_RATE;
   }

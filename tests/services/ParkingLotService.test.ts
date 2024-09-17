@@ -1,5 +1,5 @@
 import { ParkingLotService } from '../../src/services/ParkingLotService';
-import { getCostForParkingHours } from '../../src/utils/CostCalculator';
+import { calculateCostOfParkingHours } from '../../src/utils/CostCalculator';
 import { getTimeDifferenceInHours } from '../../src/utils/TimeHelpers';
 
 describe('ParkingLotService', () => {
@@ -45,7 +45,7 @@ describe('ParkingLotService', () => {
       vehicleTwoParkedTime,
       vehicleTwoRemovedTime
     );
-    const expectedCost = getCostForParkingHours(duration);
+    const expectedCost = calculateCostOfParkingHours(duration);
 
     const lineOne = 'Slot number 2 is free';
     const lineTwo = `Total parking cost: ${expectedCost}`;
