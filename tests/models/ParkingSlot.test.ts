@@ -1,5 +1,6 @@
 import { ParkingSlot } from '../../src/models/ParkingSlot';
 import { Vehicle } from '../../src/models/Vehicle';
+import { getTimeDifferenceInHours } from '../../src/utils/TimeHelpers';
 
 describe('Parking Slot', () => {
   it('should create parking slot', () => {
@@ -35,5 +36,21 @@ describe('Parking Slot', () => {
     parkingSlot.removeVehicle();
 
     expect(parkingSlot.getVehicle()).toBe(null);
+  });
+
+  it('should return parking duration in hours after remove vehicle', () => {
+    const parkingSlot = new ParkingSlot(1);
+    const vehicle = new Vehicle('xyz-123', 'White');
+
+    const parkedTime = new Date();
+    parkingSlot.parkVehicle(vehicle);
+
+    const removedTime = new Date();
+    const duration = parkingSlot.removeVehicle();
+
+    const expectedDuration = getTimeDifferenceInHours(parkedTime, removedTime);
+
+    expect(parkingSlot.getVehicle()).toBe(null);
+    expect(duration).toBe(expectedDuration);
   });
 });
