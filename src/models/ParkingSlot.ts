@@ -29,6 +29,11 @@ export class ParkingSlot {
 
   removeVehicle(): number {
     this.vehicle = null;
-    return getTimeDifferenceInHours(this.vehicleParkedTime as Date, new Date());
+    const duration = getTimeDifferenceInHours(
+      this.vehicleParkedTime as Date,
+      new Date()
+    );
+    this.vehicleParkedTime = null;
+    return duration;
   }
 }
