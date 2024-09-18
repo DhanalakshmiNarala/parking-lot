@@ -1,0 +1,15 @@
+create_parking_lot 6
+park KA-01-HH-1234 White 2024-09-18T10:35:12.123Z
+park KA-01-HH-9999 White 2024-09-18T11:35:12.123Z
+park KA-01-BB-0001 Black 2024-09-18T12:35:12.123Z
+park KA-01-HH-7777 Red 2024-09-18T13:35:12.123Z
+park KA-01-HH-2701 Blue 2024-09-18T14:35:12.123Z
+park KA-01-HH-3141 Black 2024-09-18T15:35:12.123Z
+leave 4 2024-09-18T19:35:12.123Z
+status
+park KA-01-P-333 White
+park DL-12-AA-9999 White
+registration_numbers_for_cars_with_colour White
+slot_numbers_for_cars_with_colour White
+slot_number_for_registration_number KA-01-HH-3141
+slot_number_for_registration_number MH-04-AY-1111
