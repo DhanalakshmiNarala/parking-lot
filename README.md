@@ -26,11 +26,11 @@ These instructions will help you set up and run the project on your local machin
 
    ```bash
    npx ts-node src/index.ts #For Cli view
-   npx ts-node src/index.ts file-inputs.txt #Input from file
+   npx ts-node src/index.ts files/file-inputs.txt #Input from file
    ```
 
 3. Running with docker
    ```bash
    docker-compose run parking_lot #For Cli view
-   docker-compose run parking_lot file-inputs.txt #Input from file
+   docker-compose run parking_lot files/file-inputs.txt #Input from file
    ```
