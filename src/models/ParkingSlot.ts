@@ -23,6 +23,14 @@ export class ParkingSlot {
     return this.vehicle;
   }
 
+  getParkedTime(): Date | null {
+    return this.vehicleParkedTime;
+  }
+
+  getRemovedTime(): Date | null {
+    return this.vehicleRemovedTime;
+  }
+
   isAvailable(): boolean {
     return this.vehicle == null;
   }

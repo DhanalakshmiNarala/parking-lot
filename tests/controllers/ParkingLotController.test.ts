@@ -1,5 +1,4 @@
 import { ParkingLotController } from '../../src/controllers/ParkingLotController';
-import { ParkingLot } from '../../src/models/ParkingLot';
 
 describe('ParkingLotController', () => {
   it.only('should create parking lot with given capacity', () => {

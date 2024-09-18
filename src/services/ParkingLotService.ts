@@ -3,6 +3,10 @@ import { ParkingSlot } from '../models/ParkingSlot';
 import { Vehicle } from '../models/Vehicle';
 import { calculateCostOfParkingHours } from '../utils/CostCalculator';
 import { ArgumentError } from '../utils/ErrorTypes';
+import {
+  getTimeDifferenceInHours,
+  isISOFormatDateString,
+} from '../utils/TimeHelpers';
 
 export class ParkingLotService {
   private parkingLot: ParkingLot;
@@ -20,30 +24,33 @@ export class ParkingLotService {
     return `Created a parking lot with ${capacity} slots`;
   }
 
-  parkVehicle(registeredNumber: string, color: string, dateTime = ''): string {
+  parkVehicle(
+    registeredNumber: string,
+    color: string,
+    dateTime: string
+  ): string {
+    this.validateDateString(dateTime);
+
     const slots = this.parkingLot.getParkingSlots();
 
     const availableSlot = slots.find((slot) => slot.isAvailable());
     if (availableSlot) {
       const vehicle = new Vehicle(registeredNumber, color);
-      availableSlot.parkVehicle(vehicle, dateTime);
+      availableSlot.parkVehicle(vehicle, new Date(dateTime));
       return `Allocated slot number: ${availableSlot.getPosition()}`;
     }
 
     return `Sorry, parking lot is full`;
   }
 
-  removeVehicle(slotNumber: number, dateTime = ''): string {
-    if (slotNumber < 0 || slotNumber > this.parkingLot.getCapacity()) {
-      throw new ArgumentError(
-        'Slot number',
-        'It must be greater than 0 and less than parking lot size.'
-      );
-    }
+  removeVehicle(slotNumber: number, dateTime: string): string {
+    this.validateSlotNumber(slotNumber);
+    this.validateDateString(dateTime);
 
     const slots = this.parkingLot.getParkingSlots();
-    const duration = slots[slotNumber - 1].removeVehicle(dateTime);
-    const cost = calculateCostOfParkingHours(duration);
+    const slot = slots[slotNumber - 1];
+    slot.removeVehicle(new Date(dateTime));
+    const cost = this.calculateParkingCostOfSlot(slot);
 
     const lineOne = `Slot number ${slotNumber} is free`;
     const lineTwo = `Total parking cost: ${cost}`;
@@ -95,5 +102,28 @@ export class ParkingLotService {
     }
 
     return 'Not found';
+  }
+
+  private validateDateString(dateString: string) {
+    if (!isISOFormatDateString(dateString)) {
+      throw new ArgumentError('DateTime', 'Should be in ISO format');
+    }
+  }
+
+  private validateSlotNumber(slotNumber: number) {
+    if (slotNumber < 0 || slotNumber > this.parkingLot.getCapacity()) {
+      throw new ArgumentError(
+        'Slot number',
+        'It must be greater than 0 and less than parking lot size.'
+      );
+    }
+  }
+
+  private calculateParkingCostOfSlot(slot: ParkingSlot) {
+    const duration = getTimeDifferenceInHours(
+      slot.getParkedTime() as Date,
+      slot.getRemovedTime() as Date
+    );
+    return calculateCostOfParkingHours(duration);
   }
 }
