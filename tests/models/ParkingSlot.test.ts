@@ -28,12 +28,31 @@ describe('Parking Slot', () => {
     expect(parkingSlot.isAvailable()).toBe(false);
   });
 
+  it('should take parking time while parking vehicle', () => {
+    const parkingSlot = new ParkingSlot(1);
+    const vehicle = new Vehicle('xyz-123', 'White');
+
+    parkingSlot.parkVehicle(vehicle, '2024-09-18T08:24:56.123Z');
+
+    expect(parkingSlot.isAvailable()).toBe(false);
+  });
+
   it('should remove vehicle from the slot', () => {
     const parkingSlot = new ParkingSlot(1);
     const vehicle = new Vehicle('xyz-123', 'White');
 
     parkingSlot.parkVehicle(vehicle);
     parkingSlot.removeVehicle();
+
+    expect(parkingSlot.getVehicle()).toBe(null);
+  });
+
+  it('should take leaving time while removing vehicle', () => {
+    const parkingSlot = new ParkingSlot(1);
+    const vehicle = new Vehicle('xyz-123', 'White');
+
+    parkingSlot.parkVehicle(vehicle);
+    parkingSlot.removeVehicle('2024-09-18T11:24:56.123Z');
 
     expect(parkingSlot.getVehicle()).toBe(null);
   });

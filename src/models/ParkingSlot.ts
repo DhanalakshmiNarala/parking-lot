@@ -22,16 +22,18 @@ export class ParkingSlot {
     return this.vehicle == null;
   }
 
-  parkVehicle(vehicle: Vehicle): void {
+  parkVehicle(vehicle: Vehicle, time = ''): void {
     this.vehicle = vehicle;
-    this.vehicleParkedTime = new Date();
+    this.vehicleParkedTime = time == '' ? new Date() : new Date(time);
   }
 
-  removeVehicle(): number {
+  removeVehicle(time = ''): number {
     this.vehicle = null;
+    const leavingTime = time == '' ? new Date() : new Date(time);
+
     const duration = getTimeDifferenceInHours(
       this.vehicleParkedTime as Date,
-      new Date()
+      leavingTime
     );
     this.vehicleParkedTime = null;
     return duration;
