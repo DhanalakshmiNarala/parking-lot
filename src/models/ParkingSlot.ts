@@ -1,4 +1,8 @@
-import { getTimeDifferenceInHours } from '../utils/TimeHelpers';
+import { ArgumentError } from '../utils/ErrorTypes';
+import {
+  getTimeDifferenceInHours,
+  isISOFormatDateString,
+} from '../utils/TimeHelpers';
 import { Vehicle } from './Vehicle';
 
 export class ParkingSlot {
@@ -23,13 +27,22 @@ export class ParkingSlot {
   }
 
   parkVehicle(vehicle: Vehicle, time = ''): void {
-    this.vehicle = vehicle;
+    if (time != '' && !isISOFormatDateString(time)) {
+      throw new ArgumentError('DateTime', 'Should be in ISO format');
+    }
+
     this.vehicleParkedTime = time == '' ? new Date() : new Date(time);
+
+    this.vehicle = vehicle;
   }
 
   removeVehicle(time = ''): number {
-    this.vehicle = null;
+    if (time != '' && !isISOFormatDateString(time)) {
+      throw new ArgumentError('DateTime', 'Should be in ISO format');
+    }
     const leavingTime = time == '' ? new Date() : new Date(time);
+
+    this.vehicle = null;
 
     const duration = getTimeDifferenceInHours(
       this.vehicleParkedTime as Date,
