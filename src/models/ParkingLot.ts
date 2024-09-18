@@ -1,5 +1,4 @@
 import { ParkingSlot } from './ParkingSlot';
-import { Vehicle } from './Vehicle';
 
 export class ParkingLot {
   private capacity: number;

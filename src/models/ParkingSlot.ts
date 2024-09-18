@@ -59,7 +59,7 @@ export class ParkingSlot {
       return new Date(dateString);
     }
 
-    return new Date();
+    return new Date(); // Current time as default time.
   }
 
   private afterRemovingVehicle(): void {
