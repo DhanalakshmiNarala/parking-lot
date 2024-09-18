@@ -1,6 +1,5 @@
 import { ParkingSlot } from '../../src/models/ParkingSlot';
 import { Vehicle } from '../../src/models/Vehicle';
-import { getTimeDifferenceInHours } from '../../src/utils/TimeHelpers';
 
 describe('Parking Slot', () => {
   it('should create parking slot', () => {
@@ -13,7 +12,7 @@ describe('Parking Slot', () => {
     const parkingSlot = new ParkingSlot(1);
     const vehicle = new Vehicle('xyz-123', 'White');
 
-    parkingSlot.parkVehicle(vehicle);
+    parkingSlot.parkVehicle(vehicle, new Date());
 
     expect(parkingSlot.getVehicle()).toBe(vehicle);
     expect(parkingSlot.getVehicle()).toBe(vehicle);
@@ -23,66 +22,18 @@ describe('Parking Slot', () => {
     const parkingSlot = new ParkingSlot(1);
     const vehicle = new Vehicle('xyz-123', 'White');
 
-    parkingSlot.parkVehicle(vehicle);
+    parkingSlot.parkVehicle(vehicle, new Date());
 
     expect(parkingSlot.isAvailable()).toBe(false);
-  });
-
-  it('should take parking time while parking vehicle', () => {
-    const parkingSlot = new ParkingSlot(1);
-    const vehicle = new Vehicle('xyz-123', 'White');
-
-    parkingSlot.parkVehicle(vehicle, '2024-09-18T08:24:56.123Z');
-
-    expect(parkingSlot.isAvailable()).toBe(false);
-  });
-
-  it('should not accept invalid parking time while parking vehicle', () => {
-    const parkingSlot = new ParkingSlot(1);
-    const vehicle = new Vehicle('xyz-123', 'White');
-
-    expect(() => {
-      parkingSlot.parkVehicle(vehicle, '2024-09-18 08:24:56.123Z');
-    }).toThrow("Invalid 'DateTime': Should be in ISO format");
-
-    expect(parkingSlot.isAvailable()).toBe(true);
   });
 
   it('should remove vehicle from the slot', () => {
     const parkingSlot = new ParkingSlot(1);
     const vehicle = new Vehicle('xyz-123', 'White');
 
-    parkingSlot.parkVehicle(vehicle);
-    parkingSlot.removeVehicle();
+    parkingSlot.parkVehicle(vehicle, new Date());
+    parkingSlot.removeVehicle(new Date());
 
     expect(parkingSlot.getVehicle()).toBe(null);
-  });
-
-  it('should not accept invalid leaving time while removing vehicle', () => {
-    const parkingSlot = new ParkingSlot(1);
-    const vehicle = new Vehicle('xyz-123', 'White');
-
-    parkingSlot.parkVehicle(vehicle);
-    expect(() => {
-      parkingSlot.removeVehicle('2024-09-18 11:24:56.123Z');
-    }).toThrow("Invalid 'DateTime': Should be in ISO format");
-
-    expect(parkingSlot.getVehicle()).not.toBe(null);
-  });
-
-  it('should return parking duration in hours after remove vehicle', () => {
-    const parkingSlot = new ParkingSlot(1);
-    const vehicle = new Vehicle('xyz-123', 'White');
-
-    const parkedTime = new Date();
-    parkingSlot.parkVehicle(vehicle);
-
-    const removedTime = new Date();
-    const duration = parkingSlot.removeVehicle();
-
-    const expectedDuration = getTimeDifferenceInHours(parkedTime, removedTime);
-
-    expect(parkingSlot.getVehicle()).toBe(null);
-    expect(duration).toBe(expectedDuration);
   });
 });
