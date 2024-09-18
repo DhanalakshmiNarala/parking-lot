@@ -26,29 +26,43 @@ export class ParkingSlot {
     return this.vehicle == null;
   }
 
-  parkVehicle(vehicle: Vehicle, time = ''): void {
-    if (time != '' && !isISOFormatDateString(time)) {
-      throw new ArgumentError('DateTime', 'Should be in ISO format');
-    }
-
-    this.vehicleParkedTime = time == '' ? new Date() : new Date(time);
+  parkVehicle(vehicle: Vehicle, dateTime = ''): void {
+    this.validateDateTimeString(dateTime);
+    this.vehicleParkedTime = this.getDateTime(dateTime);
 
     this.vehicle = vehicle;
   }
 
-  removeVehicle(time = ''): number {
-    if (time != '' && !isISOFormatDateString(time)) {
-      throw new ArgumentError('DateTime', 'Should be in ISO format');
-    }
-    const leavingTime = time == '' ? new Date() : new Date(time);
+  removeVehicle(dateTime = ''): number {
+    this.validateDateTimeString(dateTime);
 
     this.vehicle = null;
+    const leavingTime = this.getDateTime(dateTime);
 
-    const duration = getTimeDifferenceInHours(
+    const parkedHours = getTimeDifferenceInHours(
       this.vehicleParkedTime as Date,
       leavingTime
     );
+
+    this.afterRemovingVehicle();
+    return parkedHours;
+  }
+
+  private validateDateTimeString(dateString: string): void {
+    if (dateString != '' && !isISOFormatDateString(dateString)) {
+      throw new ArgumentError('DateTime', 'Should be in ISO format');
+    }
+  }
+
+  private getDateTime(dateString: string): Date {
+    if (dateString) {
+      return new Date(dateString);
+    }
+
+    return new Date();
+  }
+
+  private afterRemovingVehicle(): void {
     this.vehicleParkedTime = null;
-    return duration;
   }
 }
