@@ -75,19 +75,12 @@ describe('ParkingLotService', () => {
   it('should allow leaving time while leaving parked vehicle from parking lot', () => {
     service.createParkingLot(3);
     service.parkVehicle('KA-01-HH-1234', 'White');
-    const vehicleTwoParkedTime = new Date('2024-09-18T10:35:12.123Z'); // 10 am
-    service.parkVehicle('KA-01-BB-0001', 'Black', '2024-09-18T10:35:12.123Z');
+    service.parkVehicle('KA-01-BB-0001', 'Black', '2024-09-18T10:35:12.123Z'); // 10 am
 
-    const vehicleTwoRemovedTime = new Date('2024-09-18T12:35:12.123Z'); // 12 pm
-    const message = service.removeVehicle(2, '2024-09-18T12:35:12.123Z');
-    const duration = getTimeDifferenceInHours(
-      vehicleTwoParkedTime,
-      vehicleTwoRemovedTime
-    );
-    const expectedCost = calculateCostOfParkingHours(duration);
+    const message = service.removeVehicle(2, '2024-09-18T12:35:12.123Z'); // 12 pm
 
     const lineOne = 'Slot number 2 is free';
-    const lineTwo = `Total parking cost: ${expectedCost}`;
+    const lineTwo = 'Total parking cost: 200'; // 50 + 1.5 * 100
     const expectedMessage = [lineOne, lineTwo].join('\n');
 
     expect(message).toBe(expectedMessage);
