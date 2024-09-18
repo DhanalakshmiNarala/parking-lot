@@ -1,4 +1,7 @@
-import { getTimeDifferenceInHours } from '../../src/utils/TimeHelpers';
+import {
+  getTimeDifferenceInHours,
+  isISOFormatDateString as isValidISODateString,
+} from '../../src/utils/TimeHelpers';
 
 describe('getTimeDifferenceInHours', () => {
   it('should return 1 hour difference', () => {
@@ -20,5 +23,20 @@ describe('getTimeDifferenceInHours', () => {
     const endTime = new Date('2024-09-17T16:00:00'); // 4:00 PM
     const result = getTimeDifferenceInHours(startTime, endTime);
     expect(result).toBe(6);
+  });
+
+  it('should process "2024-09-18T08:24:56.123Z" as valid iso date string', () => {
+    const result = isValidISODateString('2024-09-18T08:24:56.123Z');
+    expect(result).toBe(true);
+  });
+
+  it('should process "2024-09-18 08:24:56" as invalid iso date string', () => {
+    const result = isValidISODateString('2024-09-18 08:24:56');
+    expect(result).toBe(false);
+  });
+
+  it('should process "xyz" as invalid iso date string', () => {
+    const result = isValidISODateString('xyz');
+    expect(result).toBe(false);
   });
 });
