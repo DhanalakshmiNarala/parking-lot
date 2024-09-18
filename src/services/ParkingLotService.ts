@@ -20,20 +20,20 @@ export class ParkingLotService {
     return `Created a parking lot with ${capacity} slots`;
   }
 
-  parkVehicle(registeredNumber: string, color: string): string {
+  parkVehicle(registeredNumber: string, color: string, dateTime = ''): string {
     const slots = this.parkingLot.getParkingSlots();
 
     const availableSlot = slots.find((slot) => slot.isAvailable());
     if (availableSlot) {
       const vehicle = new Vehicle(registeredNumber, color);
-      availableSlot.parkVehicle(vehicle);
+      availableSlot.parkVehicle(vehicle, dateTime);
       return `Allocated slot number: ${availableSlot.getPosition()}`;
     }
 
     return `Sorry, parking lot is full`;
   }
 
-  removeVehicle(slotNumber: number): string {
+  removeVehicle(slotNumber: number, dateTime = ''): string {
     if (slotNumber < 0 || slotNumber > this.parkingLot.getCapacity()) {
       throw new ArgumentError(
         'Slot number',
@@ -42,7 +42,7 @@ export class ParkingLotService {
     }
 
     const slots = this.parkingLot.getParkingSlots();
-    const duration = slots[slotNumber - 1].removeVehicle();
+    const duration = slots[slotNumber - 1].removeVehicle(dateTime);
     const cost = calculateCostOfParkingHours(duration);
 
     const lineOne = `Slot number ${slotNumber} is free`;

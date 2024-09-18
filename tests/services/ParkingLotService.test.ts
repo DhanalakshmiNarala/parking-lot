@@ -33,6 +33,24 @@ describe('ParkingLotService', () => {
     expect(messageThree).toBe('Sorry, parking lot is full');
   });
 
+  it('should park vehicle with given date time in parking lot', () => {
+    service.createParkingLot(2);
+
+    const messageOne = service.parkVehicle(
+      'KA-01-HH-1234',
+      'White',
+      '2024-09-18T10:35:12.123Z'
+    );
+    const messageTwo = service.parkVehicle(
+      'KA-01-BB-0001',
+      'Red',
+      '2000-01-18T10:35:12.123Z'
+    );
+
+    expect(messageOne).toBe('Allocated slot number: 1');
+    expect(messageTwo).toBe('Allocated slot number: 2');
+  });
+
   it('should leave parked vehicle from parking lot', () => {
     service.createParkingLot(3);
     service.parkVehicle('KA-01-HH-1234', 'White');
@@ -41,6 +59,27 @@ describe('ParkingLotService', () => {
 
     const vehicleTwoRemovedTime = new Date();
     const message = service.removeVehicle(2);
+    const duration = getTimeDifferenceInHours(
+      vehicleTwoParkedTime,
+      vehicleTwoRemovedTime
+    );
+    const expectedCost = calculateCostOfParkingHours(duration);
+
+    const lineOne = 'Slot number 2 is free';
+    const lineTwo = `Total parking cost: ${expectedCost}`;
+    const expectedMessage = [lineOne, lineTwo].join('\n');
+
+    expect(message).toBe(expectedMessage);
+  });
+
+  it('should allow leaving time while leaving parked vehicle from parking lot', () => {
+    service.createParkingLot(3);
+    service.parkVehicle('KA-01-HH-1234', 'White');
+    const vehicleTwoParkedTime = new Date('2024-09-18T10:35:12.123Z'); // 10 am
+    service.parkVehicle('KA-01-BB-0001', 'Black', '2024-09-18T10:35:12.123Z');
+
+    const vehicleTwoRemovedTime = new Date('2024-09-18T12:35:12.123Z'); // 12 pm
+    const message = service.removeVehicle(2, '2024-09-18T12:35:12.123Z');
     const duration = getTimeDifferenceInHours(
       vehicleTwoParkedTime,
       vehicleTwoRemovedTime

@@ -23,8 +23,14 @@ export class ParkingLotController {
       case CREATE_PARKING_LOT:
         return this.parkingLot.createParkingLot(parseInt(params[0]));
       case PARK:
+        if (params.length == 3) {
+          return this.parkingLot.parkVehicle(params[0], params[1], params[2]);
+        }
         return this.parkingLot.parkVehicle(params[0], params[1]);
       case LEAVE:
+        if (params.length == 2) {
+          return this.parkingLot.removeVehicle(parseInt(params[0]), params[1]);
+        }
         return this.parkingLot.removeVehicle(parseInt(params[0]));
       case STATUS:
         return this.parkingLot.status();
