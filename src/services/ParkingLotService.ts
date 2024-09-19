@@ -51,6 +51,7 @@ export class ParkingLotService {
     const slot = slots[slotNumber - 1];
     slot.removeVehicle(new Date(dateTime));
     const cost = this.calculateParkingCostOfSlot(slot);
+    slot.clearParkingTiminings();
 
     const lineOne = `Slot number ${slotNumber} is free`;
     const lineTwo = `Total parking cost: ${cost}`;

@@ -1,8 +1,3 @@
-import { ArgumentError } from '../utils/ErrorTypes';
-import {
-  getTimeDifferenceInHours,
-  isISOFormatDateString,
-} from '../utils/TimeHelpers';
 import { Vehicle } from './Vehicle';
 
 export class ParkingSlot {
@@ -43,5 +38,10 @@ export class ParkingSlot {
   removeVehicle(dateTime: Date): void {
     this.vehicle = null;
     this.vehicleRemovedTime = dateTime;
+  }
+
+  clearParkingTiminings(): void {
+    this.vehicleParkedTime = null;
+    this.vehicleRemovedTime = null;
   }
 }
