@@ -3,8 +3,6 @@ import { Vehicle } from './Vehicle';
 export class ParkingSlot {
   private position: number;
   private vehicle: Vehicle | null = null;
-  private vehicleParkedTime: Date | null = null;
-  private vehicleRemovedTime: Date | null = null;
 
   constructor(position: number) {
     this.position = position;
@@ -18,30 +16,15 @@ export class ParkingSlot {
     return this.vehicle;
   }
 
-  getParkedTime(): Date | null {
-    return this.vehicleParkedTime;
-  }
-
-  getRemovedTime(): Date | null {
-    return this.vehicleRemovedTime;
-  }
-
   isAvailable(): boolean {
     return this.vehicle == null;
   }
 
-  parkVehicle(vehicle: Vehicle, dateTime: Date): void {
+  parkVehicle(vehicle: Vehicle): void {
     this.vehicle = vehicle;
-    this.vehicleParkedTime = dateTime;
   }
 
-  removeVehicle(dateTime: Date): void {
+  removeVehicle(): void {
     this.vehicle = null;
-    this.vehicleRemovedTime = dateTime;
-  }
-
-  clearParkingTiminings(): void {
-    this.vehicleParkedTime = null;
-    this.vehicleRemovedTime = null;
   }
 }

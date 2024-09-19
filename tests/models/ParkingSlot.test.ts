@@ -12,7 +12,7 @@ describe('Parking Slot', () => {
     const parkingSlot = new ParkingSlot(1);
     const vehicle = new Vehicle('xyz-123', 'White');
 
-    parkingSlot.parkVehicle(vehicle, new Date());
+    parkingSlot.parkVehicle(vehicle);
 
     expect(parkingSlot.getVehicle()).toBe(vehicle);
     expect(parkingSlot.getVehicle()).toBe(vehicle);
@@ -22,7 +22,7 @@ describe('Parking Slot', () => {
     const parkingSlot = new ParkingSlot(1);
     const vehicle = new Vehicle('xyz-123', 'White');
 
-    parkingSlot.parkVehicle(vehicle, new Date());
+    parkingSlot.parkVehicle(vehicle);
 
     expect(parkingSlot.isAvailable()).toBe(false);
   });
@@ -31,8 +31,8 @@ describe('Parking Slot', () => {
     const parkingSlot = new ParkingSlot(1);
     const vehicle = new Vehicle('xyz-123', 'White');
 
-    parkingSlot.parkVehicle(vehicle, new Date());
-    parkingSlot.removeVehicle(new Date());
+    parkingSlot.parkVehicle(vehicle);
+    parkingSlot.removeVehicle();
 
     expect(parkingSlot.getVehicle()).toBe(null);
   });
