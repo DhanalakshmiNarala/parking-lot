@@ -1,6 +1,4 @@
 import { ParkingLotService } from '../../src/services/ParkingLotService';
-import { calculateCostOfParkingHours } from '../../src/utils/CostCalculator';
-import { getTimeDifferenceInHours } from '../../src/utils/TimeHelpers';
 
 describe('ParkingLotService', () => {
   const service = new ParkingLotService();
@@ -24,70 +22,38 @@ describe('ParkingLotService', () => {
   it('should park vehicle in parking lot', () => {
     service.createParkingLot(2);
 
-    const messageOne = service.parkVehicle('KA-01-HH-1234', 'White');
-    const messageTwo = service.parkVehicle('KA-01-BB-0001', 'Red');
-    const messageThree = service.parkVehicle('KA-01-HH-3141', 'Black');
+    const currentDateTime = new Date().toISOString();
+    const messageOne = service.parkVehicle(
+      'KA-01-HH-1234',
+      'White',
+      currentDateTime
+    );
+    const messageTwo = service.parkVehicle(
+      'KA-01-BB-0001',
+      'Red',
+      currentDateTime
+    );
+    const messageThree = service.parkVehicle(
+      'KA-01-HH-3141',
+      'Black',
+      currentDateTime
+    );
 
     expect(messageOne).toBe('Allocated slot number: 1');
     expect(messageTwo).toBe('Allocated slot number: 2');
     expect(messageThree).toBe('Sorry, parking lot is full');
   });
 
-  it('should park vehicle with given date time in parking lot', () => {
-    service.createParkingLot(2);
-
-    const messageOne = service.parkVehicle(
-      'KA-01-HH-1234',
-      'White',
-      '2024-09-18T10:35:12.123Z'
-    );
-    const messageTwo = service.parkVehicle(
-      'KA-01-BB-0001',
-      'Red',
-      '2000-01-18T10:35:12.123Z'
-    );
-
-    expect(messageOne).toBe('Allocated slot number: 1');
-    expect(messageTwo).toBe('Allocated slot number: 2');
-  });
-
   it('should leave parked vehicle from parking lot', () => {
     service.createParkingLot(3);
-    service.parkVehicle('KA-01-HH-1234', 'White');
-    const vehicleTwoParkedTime = new Date();
-    service.parkVehicle('KA-01-BB-0001', 'Black');
+    const currentDateTime = new Date().toISOString();
+    service.parkVehicle('KA-01-HH-1234', 'White', currentDateTime);
+    service.parkVehicle('KA-01-BB-0001', 'Black', '2024-09-18T10:35:12.123Z'); // 10 am
 
-    const vehicleTwoRemovedTime = new Date();
-    const message = service.removeVehicle(2);
-    const duration = getTimeDifferenceInHours(
-      vehicleTwoParkedTime,
-      vehicleTwoRemovedTime
-    );
-    const expectedCost = calculateCostOfParkingHours(duration);
+    const message = service.removeVehicle(2, '2024-09-18T12:35:12.123Z'); // 12 pm
 
     const lineOne = 'Slot number 2 is free';
-    const lineTwo = `Total parking cost: ${expectedCost}`;
-    const expectedMessage = [lineOne, lineTwo].join('\n');
-
-    expect(message).toBe(expectedMessage);
-  });
-
-  it('should allow leaving time while leaving parked vehicle from parking lot', () => {
-    service.createParkingLot(3);
-    service.parkVehicle('KA-01-HH-1234', 'White');
-    const vehicleTwoParkedTime = new Date('2024-09-18T10:35:12.123Z'); // 10 am
-    service.parkVehicle('KA-01-BB-0001', 'Black', '2024-09-18T10:35:12.123Z');
-
-    const vehicleTwoRemovedTime = new Date('2024-09-18T12:35:12.123Z'); // 12 pm
-    const message = service.removeVehicle(2, '2024-09-18T12:35:12.123Z');
-    const duration = getTimeDifferenceInHours(
-      vehicleTwoParkedTime,
-      vehicleTwoRemovedTime
-    );
-    const expectedCost = calculateCostOfParkingHours(duration);
-
-    const lineOne = 'Slot number 2 is free';
-    const lineTwo = `Total parking cost: ${expectedCost}`;
+    const lineTwo = 'Total parking cost: 200'; // 50 + 1.5 * 100
     const expectedMessage = [lineOne, lineTwo].join('\n');
 
     expect(message).toBe(expectedMessage);
@@ -95,8 +61,9 @@ describe('ParkingLotService', () => {
 
   it('should give parking lot status', () => {
     service.createParkingLot(3);
-    service.parkVehicle('KA-01-HH-1234', 'White');
-    service.parkVehicle('KA-01-BB-0001', 'Black');
+    const currentDateTime = new Date().toISOString();
+    service.parkVehicle('KA-01-HH-1234', 'White', currentDateTime);
+    service.parkVehicle('KA-01-BB-0001', 'Black', currentDateTime);
 
     const message = service.status();
     const lineOne = 'Slot No.\tRegistration No\tColour';
@@ -109,9 +76,10 @@ describe('ParkingLotService', () => {
 
   it('should give vehicle registration numbers for the given vehicle color', () => {
     service.createParkingLot(3);
-    service.parkVehicle('KA-01-HH-1234', 'White');
-    service.parkVehicle('KA-01-BB-0001', 'Black');
-    service.parkVehicle('KA-01-HH-7777', 'White');
+    const currentDateTime = new Date().toISOString();
+    service.parkVehicle('KA-01-HH-1234', 'White', currentDateTime);
+    service.parkVehicle('KA-01-BB-0001', 'Black', currentDateTime);
+    service.parkVehicle('KA-01-HH-7777', 'White', currentDateTime);
 
     const message = service.getVehicleRegisteredNumbersWithColor('White');
     const expectedMessage = ['KA-01-HH-1234', 'KA-01-HH-7777'].join(', ');
@@ -120,9 +88,10 @@ describe('ParkingLotService', () => {
 
   it('should give slot numbers for the given vehicle color', () => {
     service.createParkingLot(3);
-    service.parkVehicle('KA-01-HH-1234', 'White');
-    service.parkVehicle('KA-01-BB-0001', 'Black');
-    service.parkVehicle('KA-01-HH-7777', 'White');
+    const currentDateTime = new Date().toISOString();
+    service.parkVehicle('KA-01-HH-1234', 'White', currentDateTime);
+    service.parkVehicle('KA-01-BB-0001', 'Black', currentDateTime);
+    service.parkVehicle('KA-01-HH-7777', 'White', currentDateTime);
 
     const message = service.getSlotNumbersWithVehicleColor('White');
     expect(message).toBe(`1, 3`);
@@ -130,8 +99,9 @@ describe('ParkingLotService', () => {
 
   it('should give slot numbers for the given vehicle registraction number', () => {
     service.createParkingLot(3);
-    service.parkVehicle('KA-01-HH-1234', 'White');
-    service.parkVehicle('KA-01-BB-0001', 'Black');
+    const currentDateTime = new Date().toISOString();
+    service.parkVehicle('KA-01-HH-1234', 'White', currentDateTime);
+    service.parkVehicle('KA-01-BB-0001', 'Black', currentDateTime);
 
     const messageOne =
       service.getSlotNumberForRegisteredNumber('KA-01-BB-0001');

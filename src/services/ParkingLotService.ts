@@ -1,14 +1,24 @@
+import { ParkingHistory } from '../models/ParkingHistory';
 import { ParkingLot } from '../models/ParkingLot';
 import { ParkingSlot } from '../models/ParkingSlot';
 import { Vehicle } from '../models/Vehicle';
 import { calculateCostOfParkingHours } from '../utils/CostCalculator';
 import { ArgumentError } from '../utils/ErrorTypes';
+import {
+  getTimeDifferenceInHours,
+  isISOFormatDateString,
+} from '../utils/TimeHelpers';
 
 export class ParkingLotService {
   private parkingLot: ParkingLot;
+  private parkingHistory: ParkingHistory;
 
-  constructor(parkingLot = new ParkingLot()) {
+  constructor(
+    parkingLot = new ParkingLot(),
+    parkingHistory = new ParkingHistory()
+  ) {
     this.parkingLot = parkingLot;
+    this.parkingHistory = parkingHistory;
   }
 
   createParkingLot(capacity: number) {
@@ -20,34 +30,36 @@ export class ParkingLotService {
     return `Created a parking lot with ${capacity} slots`;
   }
 
-  parkVehicle(registeredNumber: string, color: string, dateTime = ''): string {
+  parkVehicle(
+    registeredNumber: string,
+    color: string,
+    dateTime: string
+  ): string {
+    this.validateDateString(dateTime);
+
     const slots = this.parkingLot.getParkingSlots();
 
     const availableSlot = slots.find((slot) => slot.isAvailable());
     if (availableSlot) {
       const vehicle = new Vehicle(registeredNumber, color);
-      availableSlot.parkVehicle(vehicle, dateTime);
+      availableSlot.parkVehicle(vehicle);
+      this.parkingHistory.addVehicleParkingTime(
+        availableSlot.getPosition(),
+        vehicle.getRegisteredNumber(),
+        new Date(dateTime)
+      );
       return `Allocated slot number: ${availableSlot.getPosition()}`;
     }
 
     return `Sorry, parking lot is full`;
   }
 
-  removeVehicle(slotNumber: number, dateTime = ''): string {
-    if (slotNumber < 0 || slotNumber > this.parkingLot.getCapacity()) {
-      throw new ArgumentError(
-        'Slot number',
-        'It must be greater than 0 and less than parking lot size.'
-      );
-    }
+  removeVehicle(slotNumber: number, dateTime: string): string {
+    this.validateRemoveVehicleParams(slotNumber, dateTime);
+    const vehicleNumber = this.removeVehicleFromSlot(slotNumber, dateTime);
 
-    const slots = this.parkingLot.getParkingSlots();
-    const duration = slots[slotNumber - 1].removeVehicle(dateTime);
-    const cost = calculateCostOfParkingHours(duration);
-
-    const lineOne = `Slot number ${slotNumber} is free`;
-    const lineTwo = `Total parking cost: ${cost}`;
-    return [lineOne, lineTwo].join('\n');
+    const cost = this.calculateParkingCostOfSlot(slotNumber, vehicleNumber);
+    return this.getRemoveVehicleMessage(slotNumber, cost);
   }
 
   status() {
@@ -95,5 +107,59 @@ export class ParkingLotService {
     }
 
     return 'Not found';
+  }
+
+  private validateDateString(dateString: string) {
+    if (!isISOFormatDateString(dateString)) {
+      throw new ArgumentError('DateTime', 'Should be in ISO format');
+    }
+  }
+
+  private validateRemoveVehicleParams(slotNumber: number, dateTime: string) {
+    if (slotNumber < 0 || slotNumber > this.parkingLot.getCapacity()) {
+      throw new ArgumentError(
+        'Slot number',
+        'It must be greater than 0 and less than parking lot size.'
+      );
+    }
+
+    this.validateDateString(dateTime);
+  }
+
+  private calculateParkingCostOfSlot(
+    slotNumber: number,
+    vehicleNumber: string
+  ) {
+    const parkingTimings = this.parkingHistory.getVehicleParkingTimings(
+      slotNumber,
+      vehicleNumber
+    );
+    const duration = getTimeDifferenceInHours(
+      parkingTimings.parkedTime,
+      parkingTimings.leftTime as Date
+    );
+    return calculateCostOfParkingHours(duration);
+  }
+
+  private removeVehicleFromSlot(slotNumber: number, dateTime: string): string {
+    const slot = this.parkingLot
+      .getParkingSlots()
+      .at(slotNumber - 1) as ParkingSlot;
+    const vehicleNumber = slot.getVehicle()?.getRegisteredNumber() as string;
+    slot.removeVehicle();
+
+    this.parkingHistory.addVehicleRemovedTime(
+      slotNumber,
+      vehicleNumber,
+      new Date(dateTime)
+    );
+
+    return vehicleNumber;
+  }
+
+  private getRemoveVehicleMessage(slotNumber: number, cost: number): string {
+    const lineOne = `Slot number ${slotNumber} is free`;
+    const lineTwo = `Total parking cost: ${cost}`;
+    return [lineOne, lineTwo].join('\n');
   }
 }
